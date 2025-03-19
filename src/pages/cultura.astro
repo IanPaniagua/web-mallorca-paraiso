@@ -1,0 +1,146 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const sitiosHistoricos = [
+  {
+    nombre: "Catedral de Palma",
+    descripcion: "La Seu, una impresionante catedral gótica junto al mar",
+    epoca: "Siglo XIII",
+    destacado: "Rosetón gótico más grande del mundo",
+    horario: "10:00 - 18:00",
+    imagen: "/images/catedral.jpg"
+  },
+  {
+    nombre: "Castillo de Bellver",
+    descripcion: "Único castillo circular de España con vistas panorámicas",
+    epoca: "Siglo XIV",
+    destacado: "Arquitectura gótica circular",
+    horario: "9:00 - 19:00",
+    imagen: "/images/bellver.jpg"
+  },
+  {
+    nombre: "Real Cartuja de Valldemossa",
+    descripcion: "Antiguo monasterio donde residió Chopin",
+    epoca: "Siglo XIV",
+    destacado: "Celdas históricas y jardines",
+    horario: "10:00 - 17:00",
+    imagen: "/images/cartuja.jpg"
+  }
+];
+
+const tradiciones = [
+  {
+    nombre: "Bailes tradicionales",
+    descripcion: "Ball de bot y otras danzas típicas mallorquinas",
+    cuando: "Festivales locales",
+    imagen: "/images/bailes.jpg"
+  },
+  {
+    nombre: "Fiestas de Sant Joan",
+    descripcion: "Celebraciones del solsticio de verano",
+    cuando: "24 de junio",
+    imagen: "/images/sant-joan.jpg"
+  },
+  {
+    nombre: "Artesanía local",
+    descripcion: "Cerámica, vidrio soplado y textiles tradicionales",
+    cuando: "Todo el año",
+    imagen: "/images/artesania.jpg"
+  }
+];
+---
+
+<Layout title="Cultura de Mallorca - Historia y Tradiciones">
+  <div slot="header">
+    <h1 class="text-4xl md:text-5xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-4 py-2">Cultura y Patrimonio</h1>
+    <p class="text-lg text-gray-600 max-w-2xl mx-auto">Descubre la rica historia y las tradiciones vivas de Mallorca, una isla donde el pasado y el presente se entrelazan.</p>
+  </div>
+
+  <section class="mb-16">
+    <h2 class="text-3xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-8">Sitios Históricos</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {sitiosHistoricos.map(sitio => (
+        <article class="bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-lg overflow-hidden shadow-lg">
+          <div class="h-48 relative">
+            <img 
+              src={sitio.imagen} 
+              alt={sitio.nombre}
+              class="absolute inset-0 w-full h-full object-cover"
+            />
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-2">{sitio.nombre}</h3>
+            <p class="text-gray-600 mb-4">{sitio.descripcion}</p>
+            <div class="space-y-2 text-sm">
+              <p><span class="font-semibold text-[#0066FF]">Época:</span> {sitio.epoca}</p>
+              <p><span class="font-semibold text-[#0066FF]">Destacado:</span> {sitio.destacado}</p>
+              <p><span class="font-semibold text-[#0066FF]">Horario:</span> {sitio.horario}</p>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="bg-gradient-to-b from-[#0066FF]/20 to-[#00D4FF]/20 rounded-lg p-8 mb-16">
+    <h2 class="text-3xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-8">Tradiciones Vivas</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {tradiciones.map(tradicion => (
+        <article class="bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-lg overflow-hidden shadow-md">
+          <div class="h-40 relative">
+            <img 
+              src={tradicion.imagen} 
+              alt={tradicion.nombre}
+              class="absolute inset-0 w-full h-full object-cover"
+            />
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-2">{tradicion.nombre}</h3>
+            <p class="text-gray-600 mb-2">{tradicion.descripcion}</p>
+            <p class="text-sm"><span class="font-semibold text-[#0066FF]">Cuándo:</span> {tradicion.cuando}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="text-center max-w-3xl mx-auto mb-16">
+    <h2 class="text-3xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-6">Calendario Cultural</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-gradient-to-br from-white to-[#00D4FF]/5 p-6 rounded-lg shadow-md">
+        <h3 class="font-display text-xl bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-4">Festivales Destacados</h3>
+        <ul class="space-y-2 text-left">
+          <li class="flex items-center gap-2">
+            <span class="text-[#0066FF]">🎭</span>
+            <span>Feria del Teatro (Mayo)</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="text-[#0066FF]">🎵</span>
+            <span>Festival de Jazz (Julio)</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="text-[#0066FF]">🎨</span>
+            <span>Nit de l'Art (Septiembre)</span>
+          </li>
+        </ul>
+      </div>
+      <div class="bg-gradient-to-br from-white to-[#00D4FF]/5 p-6 rounded-lg shadow-md">
+        <h3 class="font-display text-xl bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-4">Fiestas Populares</h3>
+        <ul class="space-y-2 text-left">
+          <li class="flex items-center gap-2">
+            <span class="text-[#0066FF]">🔥</span>
+            <span>Sant Antoni (Enero)</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="text-[#0066FF]">🌺</span>
+            <span>Corpus Christi (Junio)</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="text-[#0066FF]">🎉</span>
+            <span>Sant Sebastià (Enero)</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</Layout> 

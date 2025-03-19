@@ -1,0 +1,188 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+interface PlatoTipico {
+  nombre: string;
+  categoria: string;
+  descripcion: string;
+  ingredientes: string[];
+  imagen: string;
+}
+
+interface Restaurante {
+  nombre: string;
+  ubicacion: string;
+  especialidad: string;
+  precio: string;
+  reserva: boolean;
+}
+
+const platosTipicos: PlatoTipico[] = [
+  {
+    nombre: "Ensaimada",
+    categoria: "Dulce",
+    descripcion: "Dulce tradicional en forma de espiral, perfecto para el desayuno",
+    ingredientes: ["Harina", "Azúcar", "Manteca", "Huevos"],
+    imagen: "/images/ensaimada.jpg"
+  },
+  {
+    nombre: "Sobrasada",
+    categoria: "Embutido",
+    descripcion: "Embutido típico mallorquín de cerdo condimentado con pimentón",
+    ingredientes: ["Carne de cerdo", "Pimentón", "Sal", "Especias"],
+    imagen: "/images/sobrasada.jpg"
+  },
+  {
+    nombre: "Tumbet",
+    categoria: "Plato principal",
+    descripcion: "Plato vegetariano de berenjenas, patatas y pimientos",
+    ingredientes: ["Berenjenas", "Patatas", "Pimientos", "Tomate"],
+    imagen: "/images/tumbet.jpg"
+  },
+  {
+    nombre: "Coca de Trampó",
+    categoria: "Aperitivo",
+    descripcion: "Coca mallorquina con verduras frescas",
+    ingredientes: ["Masa de coca", "Tomate", "Pimiento verde", "Cebolla"],
+    imagen: "/images/coca.jpg"
+  }
+];
+
+const restaurantes: Restaurante[] = [
+  {
+    nombre: "Ca na Toneta",
+    ubicacion: "Caimari",
+    especialidad: "Cocina tradicional mallorquina",
+    precio: "€€€",
+    reserva: true
+  },
+  {
+    nombre: "Celler Sa Premsa",
+    ubicacion: "Palma",
+    especialidad: "Platos típicos mallorquines",
+    precio: "€€",
+    reserva: true
+  },
+  {
+    nombre: "Es Racó d'es Teix",
+    ubicacion: "Deià",
+    especialidad: "Alta cocina mediterránea",
+    precio: "€€€€",
+    reserva: true
+  }
+];
+
+--- 
+
+<Layout title="Gastronomía de Mallorca - Sabores Mediterráneos">
+  <div slot="header">
+    <h1 class="text-4xl md:text-5xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-4 py-2">Gastronomía Mallorquina</h1>
+    <p class="text-lg text-gray-600 max-w-2xl mx-auto">Descubre los sabores auténticos de la isla, desde platos tradicionales hasta creaciones contemporáneas.</p>
+  </div>
+
+  <section class="mb-16">
+    <h2 class="text-3xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-8">Platos Típicos</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {platosTipicos.map(plato => (
+        <article class="bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-lg overflow-hidden shadow-lg flex">
+          <div class="w-1/3 relative">
+            <img 
+              src={plato.imagen} 
+              alt={plato.nombre}
+              class="absolute inset-0 w-full h-full object-cover"
+            />
+          </div>
+          <div class="w-2/3 p-6">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="text-xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent">{plato.nombre}</h3>
+              <span class="bg-gradient-to-r from-[#0066FF]/10 to-[#00D4FF]/10 text-[#0066FF] px-3 py-1 rounded-full text-sm">
+                {plato.categoria}
+              </span>
+            </div>
+            <p class="text-gray-600 mb-4">{plato.descripcion}</p>
+            <div>
+              <h4 class="text-sm font-semibold text-gray-500 mb-2">Ingredientes principales:</h4>
+              <div class="flex flex-wrap gap-2">
+                {plato.ingredientes.map(ingrediente => (
+                  <span class="bg-gradient-to-r from-[#0066FF]/10 to-[#00D4FF]/10 text-[#0066FF] px-2 py-1 rounded-full text-sm font-medium">
+                    {ingrediente}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="bg-gradient-to-b from-[#0066FF]/20 to-[#00D4FF]/20 rounded-lg p-8 mb-16">
+    <h2 class="text-3xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-8">Dónde Comer</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {restaurantes.map(restaurante => (
+        <article class="bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-lg overflow-hidden shadow-md p-6">
+          <h3 class="text-xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-2">{restaurante.nombre}</h3>
+          <div class="space-y-2 text-gray-600">
+            <p class="flex items-center gap-2">
+              <span class="text-[#0066FF]">📍</span>
+              {restaurante.ubicacion}
+            </p>
+            <p class="flex items-center gap-2">
+              <span class="text-[#0066FF]">🍽️</span>
+              {restaurante.especialidad}
+            </p>
+            <p class="flex items-center gap-2">
+              <span class="text-[#0066FF]">💰</span>
+              {restaurante.precio}
+            </p>
+            {restaurante.reserva && (
+              <p class="text-[#0066FF]">
+                ✓ Se recomienda reservar
+              </p>
+            )}
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="text-center max-w-3xl mx-auto mb-16">
+    <h2 class="text-3xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-6">Experiencias Gastronómicas</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-gradient-to-br from-white to-[#00D4FF]/5 p-6 rounded-lg shadow-md">
+        <h3 class="font-display text-xl bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-4">Mercados Locales</h3>
+        <ul class="space-y-2 text-left">
+          <li class="flex items-center gap-2">
+            <span class="text-[#0066FF]">🏪</span>
+            <span>Mercado del Olivar (Palma)</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="text-[#0066FF]">🌺</span>
+            <span>Mercado de Santa Catalina</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="text-[#0066FF]">🌞</span>
+            <span>Mercado de Sineu (Miércoles)</span>
+          </li>
+        </ul>
+      </div>
+      <div class="bg-gradient-to-br from-white to-[#00D4FF]/5 p-6 rounded-lg shadow-md">
+        <h3 class="font-display text-xl bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-4">Actividades</h3>
+        <ul class="space-y-2 text-left">
+          <li class="flex items-center gap-2">
+            <span class="text-[#0066FF]">🍷</span>
+            <span>Catas de vino en bodegas locales</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="text-[#0066FF]">👨‍🍳</span>
+            <span>Clases de cocina tradicional</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="text-[#0066FF]">🫒</span>
+            <span>Visitas a almazaras de aceite</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</Layout> 

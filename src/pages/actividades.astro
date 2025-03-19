@@ -1,0 +1,183 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+interface Actividad {
+  nombre: string;
+  descripcion: string;
+  duracion: string;
+  precio: string;
+  dificultad: string;
+  incluye: string[];
+  categoria: string;
+  imagen: string;
+}
+
+const actividades: Actividad[] = [
+  {
+    nombre: "Ruta en Kayak por Calas Vírgenes",
+    descripcion: "Explora las calas más hermosas y escondidas de la costa este",
+    duracion: "4 horas",
+    precio: "€45/persona",
+    dificultad: "Media",
+    incluye: ["Equipo completo", "Guía experto", "Snacks y agua", "Seguro"],
+    categoria: "Marítima",
+    imagen: "/images/kayak.jpg"
+  },
+  {
+    nombre: "Senderismo Serra de Tramuntana",
+    descripcion: "Recorre los senderos más espectaculares de la sierra",
+    duracion: "6 horas",
+    precio: "€35/persona",
+    dificultad: "Media-Alta",
+    incluye: ["Guía local", "Picnic", "Transporte", "Seguro"],
+    categoria: "Montaña",
+    imagen: "/images/senderismo.jpg"
+  },
+  {
+    nombre: "Buceo en Reserva Marina",
+    descripcion: "Descubre la vida marina en aguas cristalinas",
+    duracion: "3 horas",
+    precio: "€75/persona",
+    dificultad: "Media",
+    incluye: ["Equipo completo", "Instructor", "Fotos", "Seguro"],
+    categoria: "Marítima",
+    imagen: "/images/buceo.jpg"
+  },
+  {
+    nombre: "Cicloturismo por Viñedos",
+    descripcion: "Pedalea entre viñedos con degustación de vinos",
+    duracion: "5 horas",
+    precio: "€55/persona",
+    dificultad: "Baja",
+    incluye: ["Bicicleta", "Cata de vinos", "Guía", "Aperitivos"],
+    categoria: "Rural",
+    imagen: "/images/bici.jpg"
+  }
+];
+
+const categorias = [
+  {
+    nombre: "Marítimas",
+    icono: "🌊",
+    descripcion: "Actividades en el mar y la costa"
+  },
+  {
+    nombre: "Montaña",
+    icono: "⛰️",
+    descripcion: "Aventuras en la Serra de Tramuntana"
+  },
+  {
+    nombre: "Rural",
+    icono: "🌳",
+    descripcion: "Experiencias en el interior de la isla"
+  },
+  {
+    nombre: "Culturales",
+    icono: "🏰",
+    descripcion: "Visitas y tours históricos"
+  }
+];
+---
+
+<Layout title="Actividades en Mallorca - Mallorca Paraíso">
+  <div slot="header">
+    <h1 class="text-4xl md:text-5xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-4 py-2">
+      Actividades en Mallorca
+    </h1>
+    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+      Explora las mejores actividades y experiencias que Mallorca tiene para ofrecer.
+    </p>
+  </div>
+
+  <section class="mb-16">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+      {categorias.map(categoria => (
+        <div class="bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-lg p-6 text-center shadow-md hover:shadow-lg transition-shadow">
+          <div class="text-4xl mb-3">{categoria.icono}</div>
+          <h3 class="font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-2">{categoria.nombre}</h3>
+          <p class="text-sm text-gray-600">{categoria.descripcion}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {actividades.map(actividad => (
+        <article class="bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-lg overflow-hidden shadow-lg">
+          <div class="h-48 relative">
+            <img 
+              src={actividad.imagen} 
+              alt={actividad.nombre}
+              class="absolute inset-0 w-full h-full object-cover"
+            />
+          </div>
+          <div class="p-6">
+            <div class="flex justify-between items-start mb-4">
+              <h2 class="text-xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent">{actividad.nombre}</h2>
+              <span class="bg-gradient-to-r from-[#0066FF]/10 to-[#00D4FF]/10 text-[#0066FF] px-3 py-1 rounded-full text-sm">
+                {actividad.categoria}
+              </span>
+            </div>
+            <p class="text-gray-600 mb-4">{actividad.descripcion}</p>
+            
+            <div class="grid grid-cols-2 gap-4 mb-4">
+              <div>
+                <h3 class="text-sm font-semibold text-gray-500">Duración</h3>
+                <p class="text-[#0066FF]">{actividad.duracion}</p>
+              </div>
+              <div>
+                <h3 class="text-sm font-semibold text-gray-500">Precio</h3>
+                <p class="text-[#0066FF]">{actividad.precio}</p>
+              </div>
+              <div>
+                <h3 class="text-sm font-semibold text-gray-500">Dificultad</h3>
+                <p class="text-[#0066FF]">{actividad.dificultad}</p>
+              </div>
+            </div>
+
+            <div class="mt-4">
+              <h3 class="text-sm font-semibold text-gray-500 mb-2">Incluye:</h3>
+              <div class="flex flex-wrap gap-2">
+                {actividad.incluye.map(item => (
+                  <span class="bg-gradient-to-r from-[#0066FF]/10 to-[#00D4FF]/10 text-[#0066FF] px-2 py-1 rounded-full text-sm">
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="bg-gradient-to-b from-[#0066FF]/20 to-[#00D4FF]/20 rounded-lg p-8 mb-16">
+    <div class="text-center max-w-3xl mx-auto">
+      <h2 class="text-3xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-6">Información Importante</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <div class="text-3xl mb-3">📅</div>
+          <h3 class="font-display text-lg mb-2">Reservas</h3>
+          <p class="text-gray-600">Recomendamos reservar con antelación, especialmente en temporada alta</p>
+        </div>
+        <div>
+          <div class="text-3xl mb-3">👥</div>
+          <h3 class="font-display text-lg mb-2">Grupos</h3>
+          <p class="text-gray-600">Disponemos de precios especiales para grupos de más de 6 personas</p>
+        </div>
+        <div>
+          <div class="text-3xl mb-3">🌦️</div>
+          <h3 class="font-display text-lg mb-2">Clima</h3>
+          <p class="text-gray-600">Las actividades pueden modificarse según las condiciones meteorológicas</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="text-center max-w-3xl mx-auto">
+    <h2 class="text-3xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-6">¿Necesitas ayuda?</h2>
+    <p class="text-lg text-gray-600 mb-8">Nuestro equipo está disponible para ayudarte a elegir y planificar las actividades perfectas para tu estancia</p>
+    <a href="/contacto" class="inline-block bg-gradient-to-r from-[#0066FF] to-[#00D4FF] hover:from-[#0066FF]/90 hover:to-[#00D4FF]/90 text-white font-bold py-3 px-8 rounded-full transition duration-300">
+      Contactar
+    </a>
+  </section>
+</Layout> 

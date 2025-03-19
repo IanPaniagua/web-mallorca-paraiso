@@ -1,14 +1,80 @@
-<!doctype html>
-<html lang="en">
+---
+import '../styles/global.css';
+
+interface Props {
+	title: string;
+	showHeader?: boolean;
+	noPadding?: boolean;
+}
+
+const { title, showHeader = true, noPadding = false } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="es">
 	<head>
 		<meta charset="UTF-8" />
+		<meta name="description" content="Descubre el paraíso de Mallorca - Tu guía completa para explorar la isla">
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>{title}</title>
 	</head>
-	<body>
-		<slot />
+	<body class="bg-white min-h-screen flex flex-col">
+		<nav class="bg-gradient-to-r from-[#0066FF] to-[#00D4FF] text-white p-4 shadow-lg">
+			<div class="container mx-auto flex justify-between items-center">
+				<a href="/" class="font-display text-2xl">Mallorca Paraíso</a>
+				<div class="space-x-6">
+					<a href="/playas" class="hover:text-white/80 transition-colors">Playas</a>
+					<a href="/cultura" class="hover:text-white/80 transition-colors">Cultura</a>
+					<a href="/gastronomia" class="hover:text-white/80 transition-colors">Gastronomía</a>
+					<a href="/actividades" class="hover:text-white/80 transition-colors">Actividades</a>
+					<a href="/alojamiento" class="hover:text-white/80 transition-colors">Alojamiento</a>
+				</div>
+			</div>
+		</nav>
+		
+		<main class="flex-grow">
+			<div class="max-w-7xl mx-auto">
+				{showHeader && (
+					<header class="text-center py-12 px-4 bg-gradient-to-b from-[#0066FF]/20 to-[#00D4FF]/20 rounded-t-lg">
+						<slot name="header" />
+					</header>
+				)}
+
+				<div class={`px-4 ${!noPadding && 'py-8'}`}>
+					<slot />
+				</div>
+			</div>
+		</main>
+
+		<footer class="bg-gradient-to-r from-[#0066FF] to-[#00D4FF] text-white mt-12 py-8 shadow-lg">
+			<div class="container mx-auto px-4">
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+					<div>
+						<h3 class="font-display text-xl mb-4">Mallorca Paraíso</h3>
+						<p class="text-white/90">Tu guía definitiva para explorar la isla más bella del Mediterráneo.</p>
+					</div>
+					<div>
+						<h4 class="font-display text-lg mb-4">Enlaces Rápidos</h4>
+						<ul class="space-y-2">
+							<li><a href="/sobre-nosotros" class="hover:text-white/80 transition-colors">Sobre Nosotros</a></li>
+							<li><a href="/contacto" class="hover:text-white/80 transition-colors">Contacto</a></li>
+							<li><a href="/mapa-del-sitio" class="hover:text-white/80 transition-colors">Mapa del Sitio</a></li>
+						</ul>
+					</div>
+					<div>
+						<h4 class="font-display text-lg mb-4">Síguenos</h4>
+						<div class="flex space-x-4">
+							<a href="#" class="hover:text-white/80 transition-colors">Instagram</a>
+							<a href="#" class="hover:text-white/80 transition-colors">Facebook</a>
+							<a href="#" class="hover:text-white/80 transition-colors">Twitter</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
 	</body>
 </html>
 

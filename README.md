@@ -46,3 +46,17 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+
+# Mallorca Paraíso
+
+## Imágenes necesarias
+
+Coloca las siguientes imágenes en la carpeta `/public/images/`:
+
+### Gastronomía
+- `ensaimada.jpg` - Foto de una ensaimada tradicional mallorquina
+- `sobrasada.jpg` - Foto de sobrasada mallorquina
+- `tumbet.jpg` - Foto de tumbet con verduras
+- `coca.jpg` - Foto de coca de trampó
+
+Las imágenes deberían tener un tamaño recomendado de 800x600 píxeles o similar proporción, en formato JPG o WEBP para mejor rendimiento.
