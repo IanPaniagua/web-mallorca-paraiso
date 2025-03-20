@@ -1,187 +1,306 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import ZonasFilter from '../components/ZonasFilter';
+import MallorcaMap from '../components/MallorcaMap';
 
-interface Alojamiento {
+interface Zona {
   nombre: string;
-  tipo: string;
-  ubicacion: string;
   descripcion: string;
-  servicios: string[];
-  precio: string;
-  puntuacion: number;
+  caracteristicas: string[];
+  recomendadoPara: string[];
+  actividades: string[];
+  alojamientosRecomendados: string[];
   imagen: string;
+  icono: string;
 }
 
-const alojamientos: Alojamiento[] = [
+const tiposAlojamiento = [
   {
-    nombre: "Hotel Paraíso Beach",
-    tipo: "Hotel",
-    ubicacion: "Playa de Palma",
-    descripcion: "Hotel de 4 estrellas con vistas al mar y acceso directo a la playa",
-    servicios: ["Piscina", "Spa", "Restaurante", "WiFi", "Parking"],
-    precio: "€€€",
-    puntuacion: 4.5,
-    imagen: "/images/hotel-paraiso.jpg"
+    nombre: "Hoteles",
+    icono: "🏨",
+    descripcion: "Desde económicos hasta lujo"
   },
   {
-    nombre: "Villa Mediterránea",
-    tipo: "Villa",
-    ubicacion: "Puerto de Pollença",
-    descripcion: "Villa de lujo con piscina privada y jardín mediterráneo",
-    servicios: ["Piscina privada", "Jardín", "BBQ", "Parking", "WiFi"],
-    precio: "€€€€",
-    puntuacion: 4.8,
-    imagen: "/images/villa-mediterranea.jpg"
+    nombre: "Apartamentos",
+    icono: "🏢",
+    descripcion: "Más independencia y comodidad"
   },
   {
-    nombre: "Agroturismo Son Manera",
-    tipo: "Agroturismo",
-    ubicacion: "Montuïri",
-    descripcion: "Antigua finca mallorquina restaurada en el corazón de la isla",
-    servicios: ["Desayuno local", "Piscina", "Huerto ecológico", "Parking"],
-    precio: "€€€",
-    puntuacion: 4.7,
-    imagen: "/images/agroturismo.jpg"
+    nombre: "Villas",
+    icono: "🏡",
+    descripcion: "Privacidad y espacio"
   },
   {
-    nombre: "Apartamentos Cala Azul",
-    tipo: "Apartamentos",
-    ubicacion: "Cala d'Or",
-    descripcion: "Apartamentos modernos a 5 minutos de la playa",
-    servicios: ["Cocina equipada", "Piscina comunitaria", "WiFi", "Parking"],
-    precio: "€€",
-    puntuacion: 4.3,
-    imagen: "/images/apartamentos.jpg"
+    nombre: "Agroturismos",
+    icono: "🌳",
+    descripcion: "Experiencia rural auténtica"
+  },
+  {
+    nombre: "Boutique",
+    icono: "✨",
+    descripcion: "Hoteles con encanto"
   }
 ];
 
-const zonas = [
+const zonas: Zona[] = [
   {
-    nombre: "Palma y alrededores",
-    descripcion: "Ideal para vida nocturna y cultura",
+    nombre: "Bahía de Palma",
+    descripcion: "La zona más urbana y animada de la isla, que combina vida nocturna, cultura y playas urbanas.",
+    caracteristicas: [
+      "Excelente conexión de transporte",
+      "Gran oferta de ocio y restaurantes",
+      "Playas urbanas equipadas",
+      "Vida nocturna activa"
+    ],
+    recomendadoPara: [
+      "Jóvenes",
+      "Amantes de la vida urbana",
+      "Interesados en la cultura",
+      "Viajeros que buscan vida nocturna"
+    ],
+    actividades: [
+      "Visitas culturales",
+      "Shopping",
+      "Vida nocturna",
+      "Deportes acuáticos"
+    ],
+    alojamientosRecomendados: [
+      "Hoteles",
+      "Apartamentos",
+      "Boutique"
+    ],
+    imagen: "/images/palma.jpg",
     icono: "🏰"
   },
   {
     nombre: "Norte - Pollença y Alcúdia",
-    descripcion: "Perfecto para familias y playas",
+    descripcion: "Zona familiar por excelencia, con largas playas de arena, aguas tranquilas y abundantes servicios.",
+    caracteristicas: [
+      "Playas extensas y poco profundas",
+      "Infraestructura familiar",
+      "Ambiente tranquilo",
+      "Naturaleza accesible"
+    ],
+    recomendadoPara: [
+      "Familias con niños",
+      "Amantes del deporte",
+      "Buscadores de tranquilidad",
+      "Aficionados al ciclismo"
+    ],
+    actividades: [
+      "Deportes náuticos",
+      "Ciclismo",
+      "Senderismo suave",
+      "Actividades familiares"
+    ],
+    alojamientosRecomendados: [
+      "Hoteles",
+      "Apartamentos",
+      "Villas"
+    ],
+    imagen: "/images/pollensa.jpg",
+    icono: "👨‍👩‍👧‍👦"
+  },
+  {
+    nombre: "Serra de Tramuntana",
+    descripcion: "Patrimonio de la Humanidad, paraíso para amantes de la naturaleza y el deporte de montaña.",
+    caracteristicas: [
+      "Pueblos pintorescos",
+      "Rutas de senderismo",
+      "Vistas espectaculares",
+      "Ambiente auténtico"
+    ],
+    recomendadoPara: [
+      "Deportistas",
+      "Amantes de la naturaleza",
+      "Fotógrafos",
+      "Buscadores de autenticidad"
+    ],
+    actividades: [
+      "Senderismo",
+      "Escalada",
+      "Ciclismo de montaña",
+      "Fotografía"
+    ],
+    alojamientosRecomendados: [
+      "Agroturismos",
+      "Boutique",
+      "Villas"
+    ],
+    imagen: "/images/tramuntana.jpg",
+    icono: "⛰️"
+  },
+  {
+    nombre: "Este - Calas",
+    descripcion: "Zona de calas paradisíacas y aguas cristalinas, perfecta para los amantes del mar.",
+    caracteristicas: [
+      "Calas vírgenes",
+      "Aguas cristalinas",
+      "Ambiente mediterráneo",
+      "Pueblos costeros"
+    ],
+    recomendadoPara: [
+      "Parejas",
+      "Amantes del mar",
+      "Aficionados al snorkel",
+      "Buscadores de playas"
+    ],
+    actividades: [
+      "Snorkel",
+      "Kayak",
+      "Excursiones en barco",
+      "Playas"
+    ],
+    alojamientosRecomendados: [
+      "Hoteles",
+      "Apartamentos",
+      "Villas"
+    ],
+    imagen: "/images/calas.jpg",
     icono: "🏖️"
   },
   {
-    nombre: "Este - Calas y Resorts",
-    descripcion: "Calas cristalinas y ambiente turístico",
-    icono: "🌊"
-  },
-  {
     nombre: "Interior - Rural",
-    descripcion: "Tranquilidad y autenticidad",
+    descripcion: "El corazón auténtico de Mallorca, con pueblos tradicionales y vida local.",
+    caracteristicas: [
+      "Pueblos tradicionales",
+      "Mercados locales",
+      "Gastronomía auténtica",
+      "Vida tranquila"
+    ],
+    recomendadoPara: [
+      "Amantes de la cultura local",
+      "Gastrónomos",
+      "Buscadores de paz",
+      "Interesados en tradiciones"
+    ],
+    actividades: [
+      "Mercados semanales",
+      "Agroturismo",
+      "Rutas gastronómicas",
+      "Bodegas"
+    ],
+    alojamientosRecomendados: [
+      "Agroturismos",
+      "Boutique",
+      "Villas"
+    ],
+    imagen: "/images/interior.jpg",
     icono: "🌳"
   }
 ];
 ---
 
-<Layout title="Alojamiento en Mallorca - Mallorca Paraíso">
+<Layout title="Zonas de Mallorca - Guía por Áreas">
   <div slot="header">
-    <h1 class="text-4xl md:text-5xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-4 py-2">
-      Alojamiento en Mallorca
+    <h1 class="text-4xl md:text-5xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-4">
+      Zonas de Mallorca
     </h1>
     <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-      Descubre los mejores lugares para hospedarte en Mallorca, desde lujosos hoteles hasta encantadores alojamientos rurales.
+      Descubre las diferentes áreas de la isla y encuentra la que mejor se adapta a tus preferencias y estilo de viaje.
     </p>
   </div>
 
   <div class="max-w-7xl mx-auto px-4">
-    <section class="mb-16">
-      <h2 class="text-3xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-8">Zonas para Alojarse</h2>
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        {zonas.map(zona => (
-          <div class="bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-xl p-8 text-center shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
-            <div class="text-4xl mb-3">{zona.icono}</div>
-            <h3 class="text-xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-2">{zona.nombre}</h3>
-            <p class="text-gray-600">{zona.descripcion}</p>
-          </div>
-        ))}
-      </div>
-    </section>
+    <MallorcaMap client:load />
+    
+    <ZonasFilter client:load tiposAlojamiento={tiposAlojamiento} />
 
-    <section class="mb-16">
-      <h2 class="text-3xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-8">Alojamientos Destacados</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {alojamientos.map(alojamiento => (
-          <article class="bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-xl overflow-hidden shadow-lg">
-            <div class="h-64 relative">
-              <img 
-                src={alojamiento.imagen} 
-                alt={alojamiento.nombre}
-                class="absolute inset-0 w-full h-full object-cover"
-              />
+    <div id="zonasGrid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {zonas.map(zona => (
+        <article 
+          class="bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-xl overflow-hidden shadow-lg"
+          data-alojamientos={zona.alojamientosRecomendados.join(',')}
+        >
+          <div class="h-64 relative">
+            <img 
+              src={zona.imagen} 
+              alt={zona.nombre}
+              class="absolute inset-0 w-full h-full object-cover"
+            />
+            <div class="absolute top-4 right-4 text-4xl">
+              {zona.icono}
             </div>
-            <div class="p-6">
-              <div class="flex justify-between items-start mb-4">
-                <div>
-                  <h3 class="text-xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent">{alojamiento.nombre}</h3>
-                  <p class="text-[#0066FF]">{alojamiento.ubicacion}</p>
+          </div>
+          <div class="p-6">
+            <h2 class="text-2xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-3">
+              {zona.nombre}
+            </h2>
+            <p class="text-gray-600 mb-4">{zona.descripcion}</p>
+            
+            <div class="space-y-4">
+              <div>
+                <h3 class="text-sm font-semibold text-gray-500 mb-2">Alojamientos recomendados:</h3>
+                <div class="flex flex-wrap gap-2">
+                  {zona.alojamientosRecomendados.map(alojamiento => (
+                    <span class="bg-gradient-to-r from-[#0066FF]/10 to-[#00D4FF]/10 text-[#0066FF] px-3 py-1 rounded-full text-sm">
+                      {alojamiento}
+                    </span>
+                  ))}
                 </div>
-                <span class="bg-gradient-to-r from-[#0066FF]/10 to-[#00D4FF]/10 text-[#0066FF] px-3 py-1 rounded-full text-sm">
-                  {alojamiento.tipo}
-                </span>
-              </div>
-              
-              <p class="text-gray-600 mb-4">{alojamiento.descripcion}</p>
-              
-              <div class="flex items-center mb-4">
-                <div class="text-[#0066FF] text-lg mr-2">{'★'.repeat(Math.floor(alojamiento.puntuacion))}</div>
-                <span class="text-gray-600">({alojamiento.puntuacion})</span>
-                <span class="ml-auto text-[#0066FF] font-semibold">{alojamiento.precio}</span>
               </div>
 
-              <div class="border-t border-[#00D4FF]/20 pt-4">
-                <h4 class="text-sm font-semibold text-gray-500 mb-2">Servicios:</h4>
+              <div>
+                <h3 class="text-sm font-semibold text-gray-500 mb-2">Características:</h3>
                 <div class="flex flex-wrap gap-2">
-                  {alojamiento.servicios.map(servicio => (
-                    <span class="bg-gradient-to-r from-[#0066FF]/10 to-[#00D4FF]/10 text-[#0066FF] px-2 py-1 rounded-full text-sm">
-                      {servicio}
+                  {zona.caracteristicas.map(caracteristica => (
+                    <span class="bg-gradient-to-r from-[#0066FF]/10 to-[#00D4FF]/10 text-[#0066FF] px-3 py-1 rounded-full text-sm">
+                      {caracteristica}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h3 class="text-sm font-semibold text-gray-500 mb-2">Recomendado para:</h3>
+                <div class="flex flex-wrap gap-2">
+                  {zona.recomendadoPara.map(perfil => (
+                    <span class="bg-gradient-to-r from-[#0066FF]/10 to-[#00D4FF]/10 text-[#0066FF] px-3 py-1 rounded-full text-sm">
+                      {perfil}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h3 class="text-sm font-semibold text-gray-500 mb-2">Actividades destacadas:</h3>
+                <div class="flex flex-wrap gap-2">
+                  {zona.actividades.map(actividad => (
+                    <span class="bg-gradient-to-r from-[#0066FF]/10 to-[#00D4FF]/10 text-[#0066FF] px-3 py-1 rounded-full text-sm">
+                      {actividad}
                     </span>
                   ))}
                 </div>
               </div>
             </div>
-          </article>
-        ))}
-      </div>
-    </section>
+          </div>
+        </article>
+      ))}
+    </div>
 
-    <section class="bg-gradient-to-b from-[#0066FF]/20 to-[#00D4FF]/20 rounded-lg p-8 mb-16">
+    <section class="bg-gradient-to-b from-[#0066FF]/20 to-[#00D4FF]/20 rounded-lg p-8 my-16">
       <div class="text-center max-w-3xl mx-auto">
-        <h2 class="text-3xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-6">Consejos para Reservar</h2>
+        <h2 class="text-3xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-6">
+          Consejos para Elegir tu Zona
+        </h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
+            <div class="text-3xl mb-3">🎯</div>
+            <h3 class="font-display text-lg mb-2">Define tus Prioridades</h3>
+            <p class="text-gray-600">Piensa en qué tipo de experiencia buscas: relax, aventura, cultura...</p>
+          </div>
+          <div>
             <div class="text-3xl mb-3">📅</div>
-            <h3 class="font-display text-lg mb-2">Temporada Alta</h3>
-            <p class="text-gray-600">Reserva con antelación para julio y agosto</p>
+            <h3 class="font-display text-lg mb-2">Temporada</h3>
+            <p class="text-gray-600">Cada zona tiene su encanto según la época del año</p>
           </div>
           <div>
-            <div class="text-3xl mb-3">💰</div>
-            <h3 class="font-display text-lg mb-2">Mejores Precios</h3>
-            <p class="text-gray-600">Temporada baja: octubre a abril</p>
-          </div>
-          <div>
-            <div class="text-3xl mb-3">🌞</div>
-            <h3 class="font-display text-lg mb-2">Ubicación</h3>
-            <p class="text-gray-600">Elige según tus planes de actividades</p>
+            <div class="text-3xl mb-3">🚗</div>
+            <h3 class="font-display text-lg mb-2">Movilidad</h3>
+            <p class="text-gray-600">Considera si necesitarás coche o prefieres transporte público</p>
           </div>
         </div>
       </div>
-    </section>
-
-    <section class="text-center max-w-3xl mx-auto">
-      <h2 class="text-3xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-6">¿Necesitas Ayuda para Elegir?</h2>
-      <p class="text-lg text-gray-600 mb-8">Nuestro equipo puede ayudarte a encontrar el alojamiento perfecto según tus preferencias y presupuesto</p>
-      <a 
-        href="/contacto" 
-        class="inline-block bg-gradient-to-r from-[#0066FF] to-[#00D4FF] hover:from-[#0066FF]/90 hover:to-[#00D4FF]/90 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105"
-      >
-        Contactar
-      </a>
     </section>
   </div>
 </Layout> 
