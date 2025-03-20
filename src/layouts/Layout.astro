@@ -22,15 +22,26 @@ const { title, showHeader = true, noPadding = false } = Astro.props;
 		<title>{title}</title>
 	</head>
 	<body class="bg-white min-h-screen flex flex-col">
-		<nav class="bg-gradient-to-r from-[#0066FF] to-[#00D4FF] text-white p-4 shadow-lg">
+		<nav class="bg-gradient-to-r from-[#0066FF] to-[#00D4FF] text-white p-4 shadow-lg relative">
 			<div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
-				<a href="/" class="font-display text-2xl">Mallorca Paraíso</a>
-				<div class="space-x-6">
-					<a href="/playas" class="hover:text-white/80 transition-colors">Playas</a>
-					<a href="/cultura" class="hover:text-white/80 transition-colors">Cultura</a>
-					<a href="/gastronomia" class="hover:text-white/80 transition-colors">Gastronomía</a>
-					<a href="/actividades" class="hover:text-white/80 transition-colors">Actividades</a>
-					<a href="/alojamiento" class="hover:text-white/80 transition-colors">Alojamiento</a>
+				<a href="/" class="font-display text-2xl z-10">Mallorca Paraíso</a>
+				
+				<!-- Botón de menú para móvil -->
+				<button id="menuButton" class="md:hidden z-10 focus:outline-none">
+					<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+					</svg>
+				</button>
+
+				<!-- Menú de navegación -->
+				<div id="mobileMenu" class="hidden md:block md:space-x-6 absolute md:relative top-full left-0 right-0 md:top-auto bg-gradient-to-r from-[#0066FF] to-[#00D4FF] md:bg-none p-4 md:p-0 shadow-lg md:shadow-none">
+					<div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6">
+						<a href="/playas" class="hover:text-white/80 transition-colors">Playas</a>
+						<a href="/cultura" class="hover:text-white/80 transition-colors">Cultura</a>
+						<a href="/gastronomia" class="hover:text-white/80 transition-colors">Gastronomía</a>
+						<a href="/actividades" class="hover:text-white/80 transition-colors">Actividades</a>
+						<a href="/alojamiento" class="hover:text-white/80 transition-colors">Alojamiento</a>
+					</div>
 				</div>
 			</div>
 		</nav>
@@ -66,7 +77,7 @@ const { title, showHeader = true, noPadding = false } = Astro.props;
 					</div>
 					<div>
 						<h4 class="font-display text-lg mb-4">Síguenos</h4>
-						<div class="flex space-x-4">
+						<div class="flex flex-wrap gap-4">
 							<a href="#" class="hover:text-white/80 transition-colors">Instagram</a>
 							<a href="#" class="hover:text-white/80 transition-colors">Facebook</a>
 							<a href="#" class="hover:text-white/80 transition-colors">Twitter</a>
@@ -86,3 +97,12 @@ const { title, showHeader = true, noPadding = false } = Astro.props;
 		height: 100%;
 	}
 </style>
+
+<script>
+	const menuButton = document.getElementById('menuButton');
+	const mobileMenu = document.getElementById('mobileMenu');
+
+	menuButton?.addEventListener('click', () => {
+		mobileMenu?.classList.toggle('hidden');
+	});
+</script>
