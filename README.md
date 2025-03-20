@@ -3,6 +3,7 @@
 ## 📖 Sobre el Proyecto
 
 Mallorca Paraíso es una web informativa diseñada para mostrar la belleza y riqueza de Mallorca. El proyecto está actualmente en desarrollo, con el objetivo de convertirse en una guía completa para visitantes y residentes de la isla.
+Ahora esta en Castellano, pero la idea es ofrecerla en alemán e ingles..
 
 ### 🎯 Objetivo
 Ofrecer información detallada y actualizada sobre:
@@ -12,6 +13,7 @@ Primera Fase:
 - Patrimonio cultural
 - Gastronomía local
 - Rutas y excursiones
+- Traducción a alemán
 
 Segunda Fase:
 - Login usuarios con Google o Facebook
@@ -68,9 +70,8 @@ El proyecto se encuentra en fase de desarrollo activo, con las siguientes seccio
 ## 🔜 Próximas Actualizaciones
 
 Funcionalidades planificadas Pronto:
+- Traducción alemán
 - Galería de fotos expandida
--Login Usuarios
-- Sistema de valoraciones y comentarios
 - Backend a parte con Node.js o Python
 
 ## 🚀 Comandos Útiles
