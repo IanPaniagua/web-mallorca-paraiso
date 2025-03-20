@@ -1,74 +1,188 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import PlayasSidebar from '../components/PlayasSidebar';
+
+interface Filters {
+  search: string;
+  zona: string;
+  pueblo: string;
+  tipo: string;
+}
+
+const zonas = [
+  "Norte",
+  "Sur",
+  "Este",
+  "Oeste",
+  "Bahía de Palma"
+];
+
+const pueblos = [
+  "Alcúdia",
+  "Pollença",
+  "Artà",
+  "Capdepera",
+  "Manacor",
+  "Santanyí",
+  "Calvià",
+  "Andratx",
+  "Palma",
+  "Campos"
+];
+
+const tipos = [
+  "Cala",
+  "Playa"
+];
 
 const playas = [
   {
-    nombre: "Cala Mesquida",
-    descripcion: "Extensa playa de arena blanca rodeada de dunas y pinos",
-    tipo: "Arena blanca",
-    longitud: "300m",
-    servicios: ["Parking", "Restaurantes", "Tumbonas", "Socorrista"],
-    imagen: "/images/rock.jpg"
+    nombre: "Playa de Alcúdia",
+    imagen: "/images/alcudia.jpg",
+    descripcion: "Una de las playas más largas de Mallorca, con aguas cristalinas y arena blanca.",
+    zona: "Norte",
+    pueblo: "Alcúdia",
+    tipo: "Playa",
+    servicios: ["Duchas", "Hamacas", "Restaurantes", "Deportes acuáticos"],
+    acceso: "Fácil acceso, parking gratuito",
+    destacado: true
   },
   {
-    nombre: "Playa de Alcúdia",
-    descripcion: "Una de las playas más largas de Mallorca, ideal para familias",
-    tipo: "Arena dorada",
-    longitud: "3.4km",
-    servicios: ["Parking", "Restaurantes", "Deportes acuáticos", "Socorrista"],
-    imagen: "/images/alcudia.jpg"
+    nombre: "Cala Mesquida",
+    imagen: "/images/rock.jpg",
+    descripcion: "Extensa playa de arena blanca rodeada de dunas y pinos",
+    zona: "Este",
+    pueblo: "Capdepera",
+    tipo: "Cala",
+    servicios: ["Parking", "Restaurantes", "Tumbonas", "Socorrista"],
+    acceso: "Acceso por carretera asfaltada",
+    destacado: false
   },
   {
     nombre: "Cala Varques",
+    imagen: "/images/cala-varques.jpg",
     descripcion: "Cala virgen de aguas cristalinas, perfecta para snorkel",
-    tipo: "Arena fina",
-    longitud: "90m",
+    zona: "Este",
+    pueblo: "Manacor",
+    tipo: "Cala",
     servicios: ["Snorkel", "Acantilados", "Naturaleza"],
-    imagen: "/images/cala-varques.jpg"
+    acceso: "Acceso a pie (15 min)",
+    destacado: false
   },
   {
     nombre: "Es Trenc",
+    imagen: "/images/es-trenc.jpg",
     descripcion: "Playa paradisíaca de aspecto caribeño",
-    tipo: "Arena blanca",
-    longitud: "2km",
+    zona: "Sur",
+    pueblo: "Campos",
+    tipo: "Playa",
     servicios: ["Chiringuitos", "Tumbonas", "Deportes acuáticos", "Parking"],
-    imagen: "/images/es-trenc.jpg"
+    acceso: "Parking de pago disponible",
+    destacado: true
   }
 ];
 ---
 
-<Layout title="Playas de Mallorca - Descubre las Mejores Calas">
+<Layout title="Playas de Mallorca - Calas y Playas Paradisíacas">
   <div slot="header">
-    <h1 class="text-4xl md:text-5xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-4 py-2">Playas y Calas de Mallorca</h1>
-    <p class="text-lg text-gray-600 max-w-2xl mx-auto">Descubre los rincones más paradisíacos de la isla, desde extensas playas de arena dorada hasta calas escondidas de aguas cristalinas.</p>
+    <div class="py-2">
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-4">
+        Playas y Calas
+      </h1>
+      <p class="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
+        Descubre los rincones más paradisíacos de la costa mallorquina.
+      </p>
+    </div>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-    {playas.map(playa => (
-      <article class="bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-lg overflow-hidden shadow-lg transform hover:scale-[1.02] transition-transform">
-        <div class="relative h-64 overflow-hidden">
-          <img 
-            src={playa.imagen} 
-            alt={playa.nombre}
-            class="w-full h-full object-cover"
-          />
-        </div>
-        <div class="p-6">
-          <h2 class="text-2xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-2">{playa.nombre}</h2>
-          <p class="text-gray-600 mb-4">{playa.descripcion}</p>
-          <div class="border-t border-[#00D4FF]/20 pt-4">
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <h3 class="text-sm font-semibold text-gray-500">Tipo de playa</h3>
-                <p class="bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent">{playa.tipo}</p>
-              </div>
-              <div>
-                <h3 class="text-sm font-semibold text-gray-500">Longitud</h3>
-                <p class="bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent">{playa.longitud}</p>
-              </div>
+  <script is:inline>
+    function filtrarPlayas(filters) {
+      console.log('Aplicando filtros:', filters);
+      
+      const articles = document.querySelectorAll('#playasGrid article');
+      
+      articles.forEach(article => {
+        const zona = article.dataset.zona;
+        const pueblo = article.dataset.pueblo;
+        const tipo = article.dataset.tipo;
+        const nombre = article.dataset.nombre;
+        
+        const matchesSearch = !filters.search || 
+          nombre.toLowerCase().includes(filters.search.toLowerCase());
+        
+        const matchesZona = !filters.zona || 
+          zona === filters.zona;
+        
+        const matchesPueblo = !filters.pueblo || 
+          pueblo === filters.pueblo;
+        
+        const matchesTipo = !filters.tipo || 
+          tipo === filters.tipo;
+        
+        const isVisible = matchesSearch && matchesZona && 
+          matchesPueblo && matchesTipo;
+        
+        console.log('Playa:', nombre, 'Visible:', isVisible);
+        article.style.display = isVisible ? 'flex' : 'none';
+      });
+    }
+
+    // Inicializar los filtros cuando se carga la página
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('Inicializando filtros...');
+      filtrarPlayas({ search: '', zona: '', pueblo: '', tipo: '' });
+    });
+  </script>
+
+  <div class="flex">
+    <PlayasSidebar 
+      client:load
+      zonas={zonas}
+      pueblos={pueblos}
+      tipos={tipos}
+    />
+    <div id="playasGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 flex-1 p-6">
+      {playas.map((playa) => (
+        <article 
+          class="bg-white rounded-lg shadow-sm overflow-hidden flex flex-col"
+          data-zona={playa.zona}
+          data-pueblo={playa.pueblo}
+          data-tipo={playa.tipo}
+          data-nombre={playa.nombre.toLowerCase()}
+        >
+          <div class="relative">
+            <img 
+              src={playa.imagen} 
+              alt={`Playa ${playa.nombre}`}
+              class="w-full h-48 object-cover"
+            />
+            {playa.destacado && (
+              <span class="absolute top-2 right-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full">
+                Destacada
+              </span>
+            )}
+          </div>
+          <div class="p-4">
+            <h3 class="text-xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-2">
+              {playa.nombre}
+            </h3>
+            <p class="text-gray-600 mb-4">{playa.descripcion}</p>
+            <div class="space-y-2 text-sm text-gray-600">
+              <p class="flex items-center gap-2">
+                <span class="text-[#0066FF]">📍</span>
+                {playa.pueblo}, {playa.zona}
+              </p>
+              <p class="flex items-center gap-2">
+                <span class="text-[#0066FF]">🏖️</span>
+                {playa.tipo}
+              </p>
+              <p class="flex items-center gap-2">
+                <span class="text-[#0066FF]">🚗</span>
+                {playa.acceso}
+              </p>
             </div>
             <div class="mt-4">
-              <h3 class="text-sm font-semibold text-gray-500 mb-2">Servicios</h3>
+              <h4 class="text-sm font-semibold text-gray-500 mb-2">Servicios</h4>
               <div class="flex flex-wrap gap-2">
                 {playa.servicios.map(servicio => (
                   <span class="bg-gradient-to-r from-[#0066FF]/10 to-[#00D4FF]/10 text-[#0066FF] px-3 py-1 rounded-full text-sm">
@@ -78,9 +192,9 @@ const playas = [
               </div>
             </div>
           </div>
-        </div>
-      </article>
-    ))}
+        </article>
+      ))}
+    </div>
   </div>
 
   <section class="bg-gradient-to-b from-[#0066FF]/20 to-[#00D4FF]/20 py-12 px-4 rounded-lg mb-12">
@@ -105,4 +219,5 @@ const playas = [
       </div>
     </div>
   </section>
-</Layout> 
+</Layout>
+
