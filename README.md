@@ -6,11 +6,27 @@ Mallorca Paraíso es una web informativa diseñada para mostrar la belleza y riq
 
 ### 🎯 Objetivo
 Ofrecer información detallada y actualizada sobre:
+Primera Fase:
 - Playas y calas de la isla
 - Actividades y experiencias
 - Patrimonio cultural
 - Gastronomía local
 - Rutas y excursiones
+
+Segunda Fase:
+- Login usuarios con Google o Facebook
+- Permitir dar like y comentar
+
+Tercera Fase: 
+- Newsletter
+
+Cuarta Fase:
+Si consigo generar suficiente tráfico
+- Hacer acuerdos con proveedores de servicios(restaurantes, actividades) reales dispuestos a pagar.
+- O incluso generar un sistema de venta de tickets y cobrar comision.
+
+Quinta Fase:
+- Hacer lo mismo con "Alojamientos".
 
 ## ✨ Estado Actual
 
@@ -51,10 +67,9 @@ El proyecto se encuentra en fase de desarrollo activo, con las siguientes seccio
 
 ## 🔜 Próximas Actualizaciones
 
-Funcionalidades planificadas:
--Login Usuarios
+Funcionalidades planificadas Pronto:
 - Galería de fotos expandida
-- Blog con consejos y recomendaciones
+-Login Usuarios
 - Sistema de valoraciones y comentarios
 - Backend a parte con Node.js o Python
 
@@ -113,5 +128,5 @@ All commands are run from the root of the project, from a terminal:
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
 
-## 👀 Want to learn more?
+
 
