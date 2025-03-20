@@ -1,76 +1,74 @@
 # 🌴 Mallorca Paraíso
 
-Mallorca Paraíso es un sitio web moderno y elegante diseñado para mostrar las maravillas de Mallorca, ofreciendo información detallada sobre playas, actividades y experiencias en la isla.
+## 📖 Sobre el Proyecto
 
-## 🎯 Características Principales
+Mallorca Paraíso es una web informativa diseñada para mostrar la belleza y riqueza de Mallorca. El proyecto está actualmente en desarrollo, con el objetivo de convertirse en una guía completa para visitantes y residentes de la isla.
+
+### 🎯 Objetivo
+Ofrecer información detallada y actualizada sobre:
+- Playas y calas de la isla
+- Actividades y experiencias
+- Patrimonio cultural
+- Gastronomía local
+- Rutas y excursiones
+
+## ✨ Estado Actual
+
+El proyecto se encuentra en fase de desarrollo activo, con las siguientes secciones implementadas:
 
 ### 🏖️ Playas y Calas
-- Catálogo completo de playas y calas de Mallorca
+- Catálogo de playas principales
 - Filtrado por zonas (Norte, Sur, Este, Oeste, Bahía de Palma)
-- Información detallada de cada playa:
+- Información detallada:
   - Ubicación y acceso
   - Servicios disponibles
   - Tipo de playa
   - Destacados especiales
 
 ### 🎨 Actividades
-- Amplia variedad de actividades categorizadas:
+- Categorías implementadas:
   - Marítimas (kayak, buceo, paseos en velero)
   - Montaña (senderismo, escalada, barranquismo)
   - Rural (cicloturismo, visitas a almazaras)
   - Culturales (tours históricos, rutas de castillos)
 - Sistema de filtrado interactivo
-- Detalles de cada actividad:
-  - Duración y precio
-  - Nivel de dificultad
-  - Servicios incluidos
-  - Imágenes representativas
+- Información detallada de cada actividad
 
-## 🛠️ Tecnologías Utilizadas
+## 🛠️ Desarrollo
 
-- [Astro](https://astro.build) - Framework web moderno
-- [React](https://reactjs.org) - Para componentes interactivos
-- [Tailwind CSS](https://tailwindcss.com) - Estilizado y diseño responsive
-- TypeScript - Tipado estático para mayor robustez
+### Tecnologías Utilizadas
+- Desarrollado con [Astro](https://astro.build) para un rendimiento óptimo
+- Componentes interactivos en React
+- Diseño responsive con Tailwind CSS
+- TypeScript para mayor robustez
 
-## 🎨 Diseño
-
-- Interfaz moderna y minimalista
-- Paleta de colores inspirada en el mar Mediterráneo
-- Diseño totalmente responsive
-- Animaciones y transiciones suaves
-- Gradientes y efectos visuales modernos
-
-## 🚀 Características Técnicas
-
+### Características Implementadas
+- Diseño moderno y minimalista
+- Interfaz responsive para todos los dispositivos
 - Filtrado dinámico de contenido
-- Componentes reutilizables
-- Optimización de imágenes
-- Rendimiento optimizado
+- Optimización de imágenes y rendimiento
 - SEO friendly
 
-## 📱 Responsive Design
+## 🔜 Próximas Actualizaciones
 
-El sitio está optimizado para todos los dispositivos:
-- Móviles
-- Tablets
-- Ordenadores de escritorio
-
-## 🔜 Próximas Funcionalidades
-
+Funcionalidades planificadas:
 - Sistema de reservas online
 - Mapa interactivo de playas
 - Galería de fotos expandida
 - Blog con consejos y recomendaciones
 - Sistema de valoraciones y comentarios
 
-## 📝 Licencia
+## 🚀 Comandos Útiles
 
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+```bash
+npm install     # Instalar dependencias
+npm run dev     # Iniciar servidor de desarrollo
+npm run build   # Construir para producción
+```
 
 ---
 
-Desarrollado con 💙 para mostrar la belleza de Mallorca
+Desarrollado con 💙 para compartir la magia de Mallorca
 
 ```sh
 npm create astro@latest -- --template basics
