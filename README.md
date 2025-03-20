@@ -52,11 +52,11 @@ El proyecto se encuentra en fase de desarrollo activo, con las siguientes seccio
 ## 🔜 Próximas Actualizaciones
 
 Funcionalidades planificadas:
-- Sistema de reservas online
-- Mapa interactivo de playas
+-Login Usuarios
 - Galería de fotos expandida
 - Blog con consejos y recomendaciones
 - Sistema de valoraciones y comentarios
+- Backend a parte con Node.js o Python
 
 ## 🚀 Comandos Útiles
 
