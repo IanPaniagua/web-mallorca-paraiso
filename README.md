@@ -1,4 +1,76 @@
-# Astro Starter Kit: Basics
+# 🌴 Mallorca Paraíso
+
+Mallorca Paraíso es un sitio web moderno y elegante diseñado para mostrar las maravillas de Mallorca, ofreciendo información detallada sobre playas, actividades y experiencias en la isla.
+
+## 🎯 Características Principales
+
+### 🏖️ Playas y Calas
+- Catálogo completo de playas y calas de Mallorca
+- Filtrado por zonas (Norte, Sur, Este, Oeste, Bahía de Palma)
+- Información detallada de cada playa:
+  - Ubicación y acceso
+  - Servicios disponibles
+  - Tipo de playa
+  - Destacados especiales
+
+### 🎨 Actividades
+- Amplia variedad de actividades categorizadas:
+  - Marítimas (kayak, buceo, paseos en velero)
+  - Montaña (senderismo, escalada, barranquismo)
+  - Rural (cicloturismo, visitas a almazaras)
+  - Culturales (tours históricos, rutas de castillos)
+- Sistema de filtrado interactivo
+- Detalles de cada actividad:
+  - Duración y precio
+  - Nivel de dificultad
+  - Servicios incluidos
+  - Imágenes representativas
+
+## 🛠️ Tecnologías Utilizadas
+
+- [Astro](https://astro.build) - Framework web moderno
+- [React](https://reactjs.org) - Para componentes interactivos
+- [Tailwind CSS](https://tailwindcss.com) - Estilizado y diseño responsive
+- TypeScript - Tipado estático para mayor robustez
+
+## 🎨 Diseño
+
+- Interfaz moderna y minimalista
+- Paleta de colores inspirada en el mar Mediterráneo
+- Diseño totalmente responsive
+- Animaciones y transiciones suaves
+- Gradientes y efectos visuales modernos
+
+## 🚀 Características Técnicas
+
+- Filtrado dinámico de contenido
+- Componentes reutilizables
+- Optimización de imágenes
+- Rendimiento optimizado
+- SEO friendly
+
+## 📱 Responsive Design
+
+El sitio está optimizado para todos los dispositivos:
+- Móviles
+- Tablets
+- Ordenadores de escritorio
+
+## 🔜 Próximas Funcionalidades
+
+- Sistema de reservas online
+- Mapa interactivo de playas
+- Galería de fotos expandida
+- Blog con consejos y recomendaciones
+- Sistema de valoraciones y comentarios
+
+## 📝 Licencia
+
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+
+---
+
+Desarrollado con 💙 para mostrar la belleza de Mallorca
 
 ```sh
 npm create astro@latest -- --template basics
