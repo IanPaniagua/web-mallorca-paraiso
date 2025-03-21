@@ -11,7 +11,7 @@ export default {
         'paradise-sunset': '#FF8C42',
       },
       fontFamily: {
-        sans: ['Montserrat', 'sans-serif'],
+        sans: ['Nunito', 'sans-serif'],
         display: ['Cormorant Garamond', 'serif'],
       },
       typography: {
@@ -24,6 +24,10 @@ export default {
               backgroundImage: 'linear-gradient(to right, #0066FF, #00D4FF)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
+              fontFamily: 'Cormorant Garamond, serif',
+            },
+            p: {
+              fontFamily: 'Nunito, sans-serif',
             },
           },
         },
