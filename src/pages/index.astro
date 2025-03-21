@@ -5,22 +5,26 @@ const features = [
 	{
 		icon: "🌊",
 		title: "Playas y Calas",
-		description: "Descubre las playas y calas más hermosas del Mediterráneo"
+		description: "Descubre las playas y calas más hermosas del Mediterráneo",
+		link: "/playas"
 	},
 	{
 		icon: "🏰",
 		title: "Rica Historia",
-		description: "Explora monumentos históricos y patrimonio cultural"
+		description: "Explora monumentos históricos y patrimonio cultural",
+		link: "/cultura"
 	},
 	{
 		icon: "🍷",
 		title: "Gastronomía",
-		description: "Saborea la auténtica cocina mallorquina"
+		description: "Saborea la auténtica cocina mallorquina",
+		link: "/gastronomia"
 	},
 	{
-		icon: "🌅",
-		title: "Atardeceres",
-		description: "Disfruta de vistas espectaculares"
+		icon: "🎯",
+		title: "Actividades",
+		description: "Disfruta de las mejores experiencias en la isla",
+		link: "/actividades"
 	}
 ];
 ---
@@ -85,7 +89,10 @@ const features = [
 			
 			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
 				{features.map(feature => (
-					<div class="group bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-xl p-6 sm:p-8 text-center shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+					<a 
+						href={feature.link}
+						class="group bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-xl p-6 sm:p-8 text-center shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+					>
 						<div class="text-4xl sm:text-5xl mb-4 sm:mb-6 transform transition-transform duration-300 group-hover:scale-110">
 							{feature.icon}
 						</div>
@@ -95,8 +102,52 @@ const features = [
 						<p class="text-gray-600">
 							{feature.description}
 						</p>
-					</div>
+					</a>
 				))}
+			</div>
+		</div>
+	</section>
+
+	<!-- About Us Section -->
+	<section class="py-16 bg-gradient-to-br from-white to-[#00D4FF]/5">
+		<div class="max-w-7xl mx-auto px-4">
+			<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+				<div class="relative h-[400px] lg:h-[500px] rounded-xl overflow-hidden">
+					<img 
+						src="/images/mallorca-nature.jpg" 
+						alt="Naturaleza de Mallorca" 
+						class="absolute inset-0 w-full h-full object-cover"
+					/>
+				</div>
+				<div>
+					<h2 class="text-3xl sm:text-4xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-6">
+						Sobre Nosotros
+					</h2>
+					<div class="space-y-4 text-gray-600">
+						<p>
+							Somos amantes de Mallorca, de su naturaleza y su cultura. Creemos firmemente que es un paraíso y que debemos cuidar que eso siga así. Por eso, en esta web promovemos un turismo sostenible y enfocado en disfrutar de la verdadera esencia de la isla.
+						</p>
+						<p>
+							Mallorca es mucho más que Ballermann, más que fiestas sin sentido. La verdadera magia la encontrarás en la conexión con su naturaleza virgen, en la experiencia de probar su auténtica gastronomía, en la sensación de originalidad que transmite su cultura milenaria.
+						</p>
+						<p class="text-lg font-display text-[#0066FF]">
+							Será en estos momentos donde encontrarás una huella única en tu vida: una inspiración, una sensación real de libertad y una profunda conexión con la vida y los demás.
+						</p>
+						<p class="mt-6 text-lg italic text-gray-700">
+							Nosotros nos encargamos de brindarte la información, pero depende de ti vivir una experiencia inolvidable y hacer de Mallorca tu hogar.
+						</p>
+						<div class="pt-4 flex gap-4">
+							<div class="flex items-center gap-2">
+								<span class="text-[#0066FF] text-2xl">🌿</span>
+								<span>Turismo Sostenible</span>
+							</div>
+							<div class="flex items-center gap-2">
+								<span class="text-[#0066FF] text-2xl">💙</span>
+								<span>Experiencias Auténticas</span>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>
