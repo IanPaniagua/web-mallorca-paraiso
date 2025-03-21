@@ -1,241 +1,318 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ActividadesFilter from '../components/ActividadesFilter';
 
-interface Actividad {
-  nombre: string;
-  descripcion: string;
-  duracion: string;
-  precio: string;
-  dificultad: string;
-  incluye: string[];
-  categoria: string;
-  imagen: string;
+interface ActivityProvider {
+  name: string;
+  address: string;
+  website: string;
+  image: string;
+  phone?: string;
+  email?: string;
 }
 
-const actividades: Actividad[] = [
-  {
-    nombre: "Ruta en Kayak por Calas Vírgenes",
-    descripcion: "Explora las calas más hermosas y escondidas de la costa este",
-    duracion: "4 horas",
-    precio: "€45/persona",
-    dificultad: "Media",
-    incluye: ["Equipo completo", "Guía experto", "Snacks y agua", "Seguro"],
-    categoria: "Marítimas",
-    imagen: "/images/kayak.jpg"
-  },
-  {
-    nombre: "Senderismo Serra de Tramuntana",
-    descripcion: "Recorre los senderos más espectaculares de la sierra",
-    duracion: "6 horas",
-    precio: "€35/persona",
-    dificultad: "Media-Alta",
-    incluye: ["Guía local", "Picnic", "Transporte", "Seguro"],
-    categoria: "Montaña",
-    imagen: "/images/senderismo.jpg"
-  },
-  {
-    nombre: "Buceo en Reserva Marina",
-    descripcion: "Descubre la vida marina en aguas cristalinas",
-    duracion: "3 horas",
-    precio: "€75/persona",
-    dificultad: "Media",
-    incluye: ["Equipo completo", "Instructor", "Fotos", "Seguro"],
-    categoria: "Marítimas",
-    imagen: "/images/buceo.jpg"
-  },
-  {
-    nombre: "Cicloturismo por Viñedos",
-    descripcion: "Pedalea entre viñedos con degustación de vinos",
-    duracion: "5 horas",
-    precio: "€55/persona",
-    dificultad: "Baja",
-    incluye: ["Bicicleta", "Cata de vinos", "Guía", "Aperitivos"],
-    categoria: "Rural",
-    imagen: "/images/bici.jpg"
-  },
-  {
-    nombre: "Tour Histórico por Palma",
-    descripcion: "Descubre los secretos de la capital y su rica historia",
-    duracion: "3 horas",
-    precio: "€25/persona",
-    dificultad: "Baja",
-    incluye: ["Guía historiador", "Entradas monumentos", "Audioguía", "Mapa histórico"],
-    categoria: "Culturales",
-    imagen: "/images/palma-catedral.jpg"
-  },
-  {
-    nombre: "Escalada en Sa Gubia",
-    descripcion: "Vive la aventura de escalar en uno de los mejores spots de la isla",
-    duracion: "4 horas",
-    precio: "€65/persona",
-    dificultad: "Alta",
-    incluye: ["Equipo completo", "Instructor certificado", "Fotos", "Seguro"],
-    categoria: "Montaña",
-    imagen: "/images/escalada.jpg"
-  },
-  {
-    nombre: "Paseo en Velero al Atardecer",
-    descripcion: "Disfruta de un romántico atardecer en el mar Mediterráneo",
-    duracion: "3 horas",
-    precio: "€85/persona",
-    dificultad: "Baja",
-    incluye: ["Aperitivo", "Cava", "Baño en cala", "Capitán profesional"],
-    categoria: "Marítimas",
-    imagen: "/images/velero.jpg"
-  },
-  {
-    nombre: "Visita a Almazara Tradicional",
-    descripcion: "Conoce el proceso de elaboración del aceite de oliva mallorquín",
-    duracion: "2 horas",
-    precio: "€30/persona",
-    dificultad: "Baja",
-    incluye: ["Degustación", "Tour guiado", "Regalo de aceite", "Aperitivos"],
-    categoria: "Rural",
-    imagen: "/images/almazara.jpg"
-  },
-  {
-    nombre: "Ruta de Castillos Medievales",
-    descripcion: "Explora las fortificaciones históricas de la isla",
-    duracion: "5 horas",
-    precio: "€40/persona",
-    dificultad: "Media",
-    incluye: ["Transporte", "Guía experto", "Entradas", "Almuerzo medieval"],
-    categoria: "Culturales",
-    imagen: "/images/castillo.jpg"
-  },
-  {
-    nombre: "Barranquismo en Sa Fosca",
-    descripcion: "Aventúrate en uno de los barrancos más espectaculares del Mediterráneo",
-    duracion: "7 horas",
-    precio: "€95/persona",
-    dificultad: "Alta",
-    incluye: ["Equipo técnico", "Guías especializados", "Picnic", "Transporte"],
-    categoria: "Montaña",
-    imagen: "/images/barranquismo.jpg"
-  }
-];
+interface Activity {
+  name: string;
+  description: string;
+  difficulty: string;
+  bestLocations: string[];
+  image: string;
+  providers: ActivityProvider[];
+}
 
-const categorias = [
+interface ActivityCategory {
+  id: string;
+  name: string;
+  icon: string;
+  description: string;
+  activities: Activity[];
+}
+
+const activityCategories: ActivityCategory[] = [
   {
-    nombre: "Marítimas",
-    icono: "🌊",
-    descripcion: "Actividades en el mar y la costa"
+    id: "water-sports",
+    name: "Deportes Acuáticos",
+    icon: "🌊",
+    description: "Actividades y deportes en el mar",
+    activities: [
+      {
+        name: "Kayak",
+        description: "Explora calas y acantilados desde el mar en kayak",
+        difficulty: "Media",
+        bestLocations: ["Costa Este", "Calas de Mallorca", "Cala Sant Vicenç"],
+        image: "/images/kayak.jpg",
+        providers: [
+          {
+            name: "Mallorca Kayak Adventures",
+            address: "Calle Marina 15, Porto Cristo",
+            website: "https://mallorcakayak.com",
+            image: "/images/providers/kayak1.jpg",
+            phone: "+34 971 123 456"
+          },
+          {
+            name: "Blue Water Sports",
+            address: "Paseo Marítimo 45, Cala d'Or",
+            website: "https://bluewater.com",
+            image: "/images/providers/kayak2.jpg",
+            phone: "+34 971 789 012"
+          }
+        ]
+      },
+      {
+        name: "Buceo",
+        description: "Descubre los fondos marinos de la isla",
+        difficulty: "Media-Alta",
+        bestLocations: ["Reserva Marina de Palma", "Cap de Formentor", "El Toro"],
+        image: "/images/buceo.jpg",
+        providers: [
+          {
+            name: "Palma Diving Center",
+            address: "Puerto Deportivo 8, Palma",
+            website: "https://palmadiving.com",
+            image: "/images/providers/diving1.jpg",
+            phone: "+34 971 234 567"
+          }
+        ]
+      }
+    ]
   },
   {
-    nombre: "Montaña",
-    icono: "⛰️",
-    descripcion: "Aventuras en la Serra de Tramuntana"
+    id: "hiking-mountain",
+    name: "Senderismo y Montaña",
+    icon: "⛰️",
+    description: "Rutas y actividades en la Serra de Tramuntana",
+    activities: [
+      {
+        name: "Trekking",
+        description: "Rutas por los senderos más espectaculares",
+        difficulty: "Variable",
+        bestLocations: ["GR-221", "Puig de Massanella", "Torrent de Pareis"],
+        image: "/images/senderismo.jpg",
+        providers: [
+          {
+            name: "Tramuntana Adventures",
+            address: "Plaza Mayor 3, Sóller",
+            website: "https://tramuntanatours.com",
+            image: "/images/providers/trekking1.jpg",
+            phone: "+34 971 345 678"
+          }
+        ]
+      },
+      {
+        name: "Escalada",
+        description: "Escalada en roca en entornos naturales únicos",
+        difficulty: "Alta",
+        bestLocations: ["Sa Gubia", "Puig de Garrafa", "Valldemossa"],
+        image: "/images/escalada.jpg",
+        providers: [
+          {
+            name: "Rock Climbing Mallorca",
+            address: "Calle Montaña 7, Valldemossa",
+            website: "https://rockclimbingmallorca.com",
+            image: "/images/providers/climbing1.jpg",
+            phone: "+34 971 456 789"
+          }
+        ]
+      }
+    ]
   },
   {
-    nombre: "Rural",
-    icono: "🌳",
-    descripcion: "Experiencias en el interior de la isla"
-  },
-  {
-    nombre: "Culturales",
-    icono: "🏰",
-    descripcion: "Visitas y tours históricos"
+    id: "cycling",
+    name: "Ciclismo",
+    icon: "🚴",
+    description: "Rutas en bicicleta por toda la isla",
+    activities: [
+      {
+        name: "Cicloturismo",
+        description: "Recorre la isla en bicicleta",
+        difficulty: "Variable",
+        bestLocations: ["Serra de Tramuntana", "Playa de Muro", "Cap de Formentor"],
+        image: "/images/bici.jpg",
+        providers: [
+          {
+            name: "Mallorca Bike Tours",
+            address: "Avenida Ciclista 23, Pollença",
+            website: "https://mallorcabike.com",
+            image: "/images/providers/bike1.jpg",
+            phone: "+34 971 567 890"
+          }
+        ]
+      }
+    ]
   }
 ];
 ---
 
 <Layout title="Actividades en Mallorca - Mallorca Paraíso">
   <div slot="header">
-    <div class="py-2">
+    <div class="py-2 text-center">
       <h1 class="text-4xl md:text-5xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-4">
         Actividades en Mallorca
       </h1>
       <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-        Explora las mejores actividades y experiencias que Mallorca tiene para ofrecer.
+        Descubre todas las actividades que puedes realizar en la isla.
       </p>
     </div>
   </div>
 
-  <section class="mb-16">
-    <ActividadesFilter client:load categorias={categorias} />
-
-    <div id="actividadesGrid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      {actividades.map(actividad => (
-        <article 
-          class="bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-lg overflow-hidden shadow-lg"
-          data-categoria={actividad.categoria}
+  <!-- Categorías en horizontal -->
+  <div class="mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {activityCategories.map(category => (
+        <button 
+          class="w-full text-left focus:outline-none category-button"
+          onclick={`
+            // Ocultar todos los contenidos
+            document.querySelectorAll('.activities-content').forEach(el => el.classList.add('hidden'));
+            // Mostrar el contenido seleccionado
+            document.getElementById('activities-${category.id}').classList.toggle('hidden');
+            // Marcar/desmarcar botón activo
+            document.querySelectorAll('.category-button').forEach(btn => btn.classList.remove('active'));
+            this.classList.toggle('active');
+          `}
         >
-          <div class="h-48 relative">
-            <img 
-              src={actividad.imagen} 
-              alt={actividad.nombre}
-              class="absolute inset-0 w-full h-full object-cover"
-            />
-          </div>
-          <div class="p-6">
-            <div class="flex justify-between items-start mb-4">
-              <h2 class="text-xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent">{actividad.nombre}</h2>
-              <span class="bg-gradient-to-r from-[#0066FF]/10 to-[#00D4FF]/10 text-[#0066FF] px-3 py-1 rounded-full text-sm">
-                {actividad.categoria}
-              </span>
-            </div>
-            <p class="text-gray-600 mb-4">{actividad.descripcion}</p>
-            
-            <div class="grid grid-cols-2 gap-4 mb-4">
-              <div>
-                <h3 class="text-sm font-semibold text-gray-500">Duración</h3>
-                <p class="text-[#0066FF]">{actividad.duracion}</p>
-              </div>
-              <div>
-                <h3 class="text-sm font-semibold text-gray-500">Precio</h3>
-                <p class="text-[#0066FF]">{actividad.precio}</p>
-              </div>
-              <div>
-                <h3 class="text-sm font-semibold text-gray-500">Dificultad</h3>
-                <p class="text-[#0066FF]">{actividad.dificultad}</p>
+          <article class="bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 h-full">
+            <div class="p-6">
+              <div class="flex items-center gap-4">
+                <div class="text-4xl">{category.icon}</div>
+                <div class="flex-grow">
+                  <h2 class="text-xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent">
+                    {category.name}
+                  </h2>
+                  <p class="text-sm text-gray-600 mt-1">{category.description}</p>
+                </div>
               </div>
             </div>
-
-            <div class="mt-4">
-              <h3 class="text-sm font-semibold text-gray-500 mb-2">Incluye:</h3>
-              <div class="flex flex-wrap gap-2">
-                {actividad.incluye.map(item => (
-                  <span class="bg-gradient-to-r from-[#0066FF]/10 to-[#00D4FF]/10 text-[#0066FF] px-2 py-1 rounded-full text-sm">
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </article>
+          </article>
+        </button>
       ))}
     </div>
-  </section>
+  </div>
 
-  <section class="bg-gradient-to-b from-[#0066FF]/20 to-[#00D4FF]/20 rounded-lg p-8 mb-16">
-    <div class="text-center max-w-3xl mx-auto">
-      <h2 class="text-3xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-6">Información Importante</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div>
-          <div class="text-3xl mb-3">📅</div>
-          <h3 class="font-display text-lg mb-2">Reservas</h3>
-          <p class="text-gray-600">Recomendamos reservar con antelación, especialmente en temporada alta</p>
+  <!-- Contenido de actividades (inicialmente oculto) -->
+  {activityCategories.map(category => (
+    <div id={`activities-${category.id}`} class="hidden activities-content mb-16">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {category.activities.map(activity => (
+          <article class="bg-white rounded-lg overflow-hidden shadow-md">
+            <div class="h-48 relative">
+              <img 
+                src={activity.image} 
+                alt={activity.name}
+                class="absolute inset-0 w-full h-full object-cover"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-3">
+                {activity.name}
+              </h3>
+              <p class="text-gray-600 mb-4">{activity.description}</p>
+              
+              <div class="space-y-3">
+                <div>
+                  <h4 class="text-sm font-semibold text-gray-500">Dificultad</h4>
+                  <p class="text-[#0066FF]">{activity.difficulty}</p>
+                </div>
+                
+                <div>
+                  <h4 class="text-sm font-semibold text-gray-500">Mejores zonas</h4>
+                  <ul class="mt-1 space-y-1">
+                    {activity.bestLocations.map(location => (
+                      <li class="text-gray-600 flex items-center gap-2">
+                        <span class="text-[#0066FF]">📍</span> {location}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <button 
+                  class="mt-4 w-full bg-gradient-to-r from-[#0066FF] to-[#00D4FF] hover:from-[#0066FF]/90 hover:to-[#00D4FF]/90 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"
+                  onclick={`document.getElementById('providersModal').classList.remove('hidden');
+                           document.getElementById('providersContent').innerHTML = \`
+                             ${activity.providers.map(provider => `
+                               <article class="bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-lg overflow-hidden shadow-md">
+                                 <div class="h-40 relative">
+                                   <img 
+                                     src="${provider.image}" 
+                                     alt="${provider.name}"
+                                     class="absolute inset-0 w-full h-full object-cover"
+                                   />
+                                 </div>
+                                 <div class="p-4">
+                                   <h4 class="text-lg font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-2">
+                                     ${provider.name}
+                                   </h4>
+                                   <p class="text-gray-600 mb-2 flex items-center gap-2">
+                                     <span class="text-[#0066FF]">📍</span>
+                                     ${provider.address}
+                                   </p>
+                                   <p class="text-gray-600 mb-2 flex items-center gap-2">
+                                     <span class="text-[#0066FF]">📞</span>
+                                     ${provider.phone || 'No disponible'}
+                                   </p>
+                                   <a 
+                                     href="${provider.website}" 
+                                     target="_blank" 
+                                     rel="noopener noreferrer"
+                                     class="text-[#0066FF] hover:underline flex items-center gap-2"
+                                   >
+                                     <span>🌐</span>
+                                     Visitar web
+                                   </a>
+                                 </div>
+                               </article>
+                             `).join('')}
+                           \`;`}
+                >
+                  Ver proveedores
+                </button>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  ))}
+
+  <!-- Modal para mostrar proveedores -->
+  <div id="providersModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50" onclick="if(event.target === this) this.classList.add('hidden')">
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl bg-white rounded-lg shadow-xl">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-2xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent">
+            Proveedores
+          </h3>
+          <button onclick="document.getElementById('providersModal').classList.add('hidden')" class="text-gray-500 hover:text-gray-700">
+            ✕
+          </button>
         </div>
-        <div>
-          <div class="text-3xl mb-3">👥</div>
-          <h3 class="font-display text-lg mb-2">Grupos</h3>
-          <p class="text-gray-600">Disponemos de precios especiales para grupos de más de 6 personas</p>
-        </div>
-        <div>
-          <div class="text-3xl mb-3">🌦️</div>
-          <h3 class="font-display text-lg mb-2">Clima</h3>
-          <p class="text-gray-600">Las actividades pueden modificarse según las condiciones meteorológicas</p>
+        <div id="providersContent" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- El contenido se llenará dinámicamente -->
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</Layout>
 
-  <section class="text-center max-w-3xl mx-auto">
-    <h2 class="text-3xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-6">¿Necesitas ayuda?</h2>
-    <p class="text-lg text-gray-600 mb-8">Nuestro equipo está disponible para ayudarte a elegir y planificar las actividades perfectas para tu estancia</p>
-    <a href="/contacto" class="inline-block bg-gradient-to-r from-[#0066FF] to-[#00D4FF] hover:from-[#0066FF]/90 hover:to-[#00D4FF]/90 text-white font-bold py-3 px-8 rounded-full transition duration-300">
-      Contactar
-    </a>
-  </section>
-</Layout> 
+<style>
+  .category-button {
+    transition: all 0.3s ease;
+  }
+
+  .category-button.active article {
+    background: linear-gradient(135deg, #0066FF 0%, #00D4FF 100%);
+  }
+
+  .category-button.active h2 {
+    color: white;
+    background: none;
+    -webkit-text-fill-color: initial;
+  }
+
+  .category-button.active p {
+    color: white;
+  }
+
+  .activities-content {
+    transition: all 0.3s ease-in-out;
+  }
+</style> 

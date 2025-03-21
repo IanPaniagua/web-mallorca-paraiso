@@ -216,12 +216,24 @@ const zonas: Zona[] = [
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {zonas.map(zona => (
           <button 
-            class="bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-xl p-8 text-center shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 w-full"
-            onclick={`mostrarDetallesZona('${zona.id}')`}
+            class="w-full text-left focus:outline-none zona-button"
+            onclick={`
+              // Ocultar todos los detalles
+              document.querySelectorAll('[id^="detalles-"]').forEach(el => el.classList.add('hidden'));
+              // Mostrar los detalles de la zona seleccionada
+              document.getElementById('detalles-${zona.id}').classList.remove('hidden');
+              // Marcar/desmarcar botón activo
+              document.querySelectorAll('.zona-button').forEach(btn => btn.classList.remove('active'));
+              this.classList.add('active');
+              // Scroll suave
+              document.getElementById('detalles-${zona.id}').scrollIntoView({ behavior: 'smooth' });
+            `}
           >
-            <div class="text-4xl mb-3">{zona.icono}</div>
-            <h3 class="text-xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-2">{zona.nombre}</h3>
-            <p class="text-gray-600">{zona.descripcionCorta}</p>
+            <article class="bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-xl p-8 text-center shadow-md hover:shadow-xl transition-all duration-300 h-full">
+              <div class="text-4xl mb-3">{zona.icono}</div>
+              <h3 class="text-xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-2">{zona.nombre}</h3>
+              <p class="text-gray-600">{zona.descripcionCorta}</p>
+            </article>
           </button>
         ))}
       </div>
@@ -302,22 +314,6 @@ const zonas: Zona[] = [
       </section>
     ))}
 
-    <script is:inline>
-      function mostrarDetallesZona(zonaId) {
-        // Ocultar todos los detalles
-        document.querySelectorAll('[id^="detalles-"]').forEach(el => {
-          el.classList.add('hidden');
-        });
-        
-        // Mostrar los detalles de la zona seleccionada
-        const detalles = document.getElementById(`detalles-${zonaId}`);
-        if (detalles) {
-          detalles.classList.remove('hidden');
-          detalles.scrollIntoView({ behavior: 'smooth' });
-        }
-      }
-    </script>
-
     <section class="bg-gradient-to-b from-[#0066FF]/20 to-[#00D4FF]/20 rounded-lg p-8 my-16">
       <div class="text-center max-w-3xl mx-auto">
         <h2 class="text-3xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-6">
@@ -343,4 +339,29 @@ const zonas: Zona[] = [
       </div>
     </section>
   </div>
-</Layout> 
+</Layout>
+
+<style>
+  .zona-button {
+    transition: all 0.3s ease;
+  }
+
+  .zona-button.active article {
+    background: linear-gradient(135deg, #0066FF 0%, #00D4FF 100%);
+    transform: translateY(-0.25rem);
+  }
+
+  .zona-button.active h3 {
+    color: white;
+    background: none;
+    -webkit-text-fill-color: initial;
+  }
+
+  .zona-button.active p {
+    color: white;
+  }
+
+  .zona-button:hover article {
+    transform: translateY(-0.25rem);
+  }
+</style> 
