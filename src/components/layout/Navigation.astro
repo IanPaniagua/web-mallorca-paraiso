@@ -1,0 +1,40 @@
+---
+const menuItems = [
+    { href: '/playas', label: 'Playas' },
+    { href: '/cultura', label: 'Cultura' },
+    { href: '/gastronomia', label: 'Gastronomía' },
+    { href: '/actividades', label: 'Actividades' },
+    { href: '/alojamiento', label: 'Alojamiento' }
+];
+---
+
+<nav class="bg-gradient-to-r from-[#0066FF] to-[#00D4FF] text-white p-4 shadow-lg relative">
+    <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+        <a href="/" class="font-display text-2xl z-10">Mallorca Paraíso</a>
+        
+        <!-- Botón de menú para móvil -->
+        <button id="menuButton" class="md:hidden z-10 focus:outline-none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+        </button>
+
+        <!-- Menú de navegación -->
+        <div id="mobileMenu" class="hidden md:block md:space-x-6 absolute md:relative top-full left-0 right-0 md:top-auto bg-gradient-to-r from-[#0066FF] to-[#00D4FF] md:bg-none p-4 md:p-0 shadow-lg md:shadow-none z-50">
+            <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6">
+                {menuItems.map(item => (
+                    <a href={item.href} class="hover:text-white/80 transition-colors">{item.label}</a>
+                ))}
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script>
+    const menuButton = document.getElementById('menuButton');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    menuButton?.addEventListener('click', () => {
+        mobileMenu?.classList.toggle('hidden');
+    });
+</script> 

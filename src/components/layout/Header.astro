@@ -1,0 +1,26 @@
+---
+interface Props {
+    showHeader?: boolean;
+    title?: string;
+    description?: string;
+}
+
+const { 
+    showHeader = true,
+    title = "Bienvenido a Mallorca",
+    description = "Descubre el paraíso mediterráneo"
+} = Astro.props;
+---
+
+{showHeader && (
+    <header class="text-center py-12 px-4 bg-gradient-to-b from-[#0066FF]/20 to-[#00D4FF]/20 rounded-t-lg">
+        <slot>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-4">
+                {title}
+            </h1>
+            <p class="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
+                {description}
+            </p>
+        </slot>
+    </header>
+)} 

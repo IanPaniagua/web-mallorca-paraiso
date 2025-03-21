@@ -1,0 +1,20 @@
+---
+import API from '../services/API';
+
+let mensaje = '';
+let error = null;
+
+try {
+    const respuesta = await API.test();
+    mensaje = 'Conexión exitosa!';
+    console.log(respuesta);
+} catch (err) {
+    error = 'Error al conectar con el backend';
+    console.error(err);
+}
+---
+
+<div>
+    {mensaje && <p style="color: green">{mensaje}</p>}
+    {error && <p style="color: red">{error}</p>}
+</div> 
