@@ -14,7 +14,23 @@ export default {
         sans: ['Montserrat', 'sans-serif'],
         display: ['Cormorant Garamond', 'serif'],
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: 'none',
+            color: '#334155',
+            '--tw-prose-headings': '#0066FF',
+            h2: {
+              backgroundImage: 'linear-gradient(to right, #0066FF, #00D4FF)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            },
+          },
+        },
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 } 
