@@ -1,74 +1,126 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-interface PlatoTipico {
-  nombre: string;
-  categoria: string;
-  descripcion: string;
-  ingredientes: string[];
-  imagen: string;
+interface TypicalDish {
+  name: string;
+  category: string;
+  description: string;
+  ingredients: string[];
+  image: string;
 }
 
-interface Restaurante {
-  nombre: string;
-  ubicacion: string;
-  especialidad: string;
-  precio: string;
-  reserva: boolean;
+interface Restaurant {
+  name: string;
+  location: string;
+  address: string;
+  googleMapsUrl: string;
+  specialty: string;
+  price: string;
+  reservationNeeded: boolean;
+  url: string;
+  type: string;
 }
 
-const platosTipicos: PlatoTipico[] = [
+interface LocalMarket {
+  name: string;
+  location: string;
+  address: string;
+  googleMapsUrl: string;
+  days: string;
+  hours: string;
+}
+
+const typicalDishes: TypicalDish[] = [
   {
-    nombre: "Ensaimada",
-    categoria: "Dulce",
-    descripcion: "Dulce tradicional en forma de espiral, perfecto para el desayuno",
-    ingredientes: ["Harina", "Azúcar", "Manteca", "Huevos"],
-    imagen: "/images/ensaimada.jpg"
+    name: "Ensaimada",
+    category: "Dulce",
+    description: "Dulce traditional in spiral shape, perfect for breakfast",
+    ingredients: ["Harina", "Azúcar", "Manteca", "Huevos"],
+    image: "/images/ensaimada.jpg"
   },
   {
-    nombre: "Sobrasada",
-    categoria: "Embutido",
-    descripcion: "Embutido típico mallorquín de cerdo condimentado con pimentón",
-    ingredientes: ["Carne de cerdo", "Pimentón", "Sal", "Especias"],
-    imagen: "/images/sobrasada.jpg"
+    name: "Sobrasada",
+    category: "Embutido",
+    description: "Típico mallorcan pork sausage seasoned with paprika",
+    ingredients: ["Carne de cerdo", "Paprika", "Sal", "Especias"],
+    image: "/images/sobrasada.jpg"
   },
   {
-    nombre: "Tumbet",
-    categoria: "Plato principal",
-    descripcion: "Plato vegetariano de berenjenas, patatas y pimientos",
-    ingredientes: ["Berenjenas", "Patatas", "Pimientos", "Tomate"],
-    imagen: "/images/tumbet.jpg"
+    name: "Tumbet",
+    category: "Plato principal",
+    description: "Vegetarian plate of berenjenas, patatas y pimientos",
+    ingredients: ["Berenjenas", "Patatas", "Pimientos", "Tomate"],
+    image: "/images/tumbet.jpg"
   },
   {
-    nombre: "Coca de Trampó",
-    categoria: "Aperitivo",
-    descripcion: "Coca mallorquina con verduras frescas",
-    ingredientes: ["Masa de coca", "Tomate", "Pimiento verde", "Cebolla"],
-    imagen: "/images/coca.jpg"
+    name: "Coca de Trampó",
+    category: "Aperitivo",
+    description: "Mallorca's traditional coca with fresh vegetables",
+    ingredients: ["Masa de coca", "Tomate", "Pimiento verde", "Cebolla"],
+    image: "/images/coca.jpg"
   }
 ];
 
-const restaurantes: Restaurante[] = [
+const restaurants: Restaurant[] = [
   {
-    nombre: "Ca na Toneta",
-    ubicacion: "Caimari",
-    especialidad: "Cocina tradicional mallorquina",
-    precio: "€€€",
-    reserva: true
+    name: "Ca na Toneta",
+    location: "Caimari",
+    address: "Carrer de s'Horitzó, 21, 07314 Caimari",
+    googleMapsUrl: "https://goo.gl/maps/1J7Z9Z9Z9Z9Z9Z9Z9",
+    specialty: "Traditional mallorcan cuisine",
+    price: "€€€",
+    reservationNeeded: true,
+    url: "https://www.canatoneta.com",
+    type: "familiar"
   },
   {
-    nombre: "Celler Sa Premsa",
-    ubicacion: "Palma",
-    especialidad: "Platos típicos mallorquines",
-    precio: "€€",
-    reserva: true
+    name: "Celler Sa Premsa",
+    location: "Palma",
+    address: "Plaça del Bisbe Berenguer de Palou, 8, 07003 Palma",
+    googleMapsUrl: "https://goo.gl/maps/2J7Z9Z9Z9Z9Z9Z9Z9",
+    specialty: "Mallorcan typical dishes",
+    price: "€€",
+    reservationNeeded: true,
+    url: "https://www.cellersapremsa.com",
+    type: "tradicional"
   },
   {
-    nombre: "Es Racó d'es Teix",
-    ubicacion: "Deià",
-    especialidad: "Alta cocina mediterránea",
-    precio: "€€€€",
-    reserva: true
+    name: "Es Racó d'es Teix",
+    location: "Deià",
+    address: "Carrer Sa Vinya Vella, 6, 07179 Deià",
+    googleMapsUrl: "https://goo.gl/maps/3J7Z9Z9Z9Z9Z9Z9Z9",
+    specialty: "High Mediterranean cuisine",
+    price: "€€€€",
+    reservationNeeded: true,
+    url: "https://esracodesteix.es",
+    type: "romántico"
+  }
+];
+
+const localMarkets: LocalMarket[] = [
+  {
+    name: "Mercado del Olivar",
+    location: "Palma",
+    address: "Plaça de l'Olivar, s/n, 07002 Palma",
+    googleMapsUrl: "https://goo.gl/maps/4J7Z9Z9Z9Z9Z9Z9Z9",
+    days: "Lunes a Sábado",
+    hours: "7:00 - 14:00"
+  },
+  {
+    name: "Mercado de Santa Catalina",
+    location: "Palma",
+    address: "Plaça Navegació, s/n, 07013 Palma",
+    googleMapsUrl: "https://goo.gl/maps/5J7Z9Z9Z9Z9Z9Z9Z9",
+    days: "Lunes a Sábado",
+    hours: "7:00 - 17:00"
+  },
+  {
+    name: "Mercado de Sineu",
+    location: "Sineu",
+    address: "Plaça des Fossar, 07510 Sineu",
+    googleMapsUrl: "https://goo.gl/maps/6J7Z9Z9Z9Z9Z9Z9Z9",
+    days: "Miércoles",
+    hours: "8:00 - 14:00"
   }
 ];
 
@@ -89,29 +141,29 @@ const restaurantes: Restaurante[] = [
   <section class="mb-12 sm:mb-16">
     <h2 class="text-2xl sm:text-3xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-6 sm:mb-8">Platos Típicos</h2>
     <div class="grid grid-cols-1 gap-6 sm:gap-8">
-      {platosTipicos.map(plato => (
+      {typicalDishes.map(dish => (
         <article class="bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-lg overflow-hidden shadow-lg flex flex-col sm:flex-row">
           <div class="w-full sm:w-1/3 h-48 sm:h-auto relative">
             <img 
-              src={plato.imagen} 
-              alt={plato.nombre}
+              src={dish.image} 
+              alt={dish.name}
               class="absolute inset-0 w-full h-full object-cover"
             />
           </div>
           <div class="w-full sm:w-2/3 p-4 sm:p-6">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2 sm:mb-4">
-              <h3 class="text-xl sm:text-2xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-2 sm:mb-0">{plato.nombre}</h3>
+              <h3 class="text-xl sm:text-2xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-2 sm:mb-0">{dish.name}</h3>
               <span class="bg-gradient-to-r from-[#0066FF]/10 to-[#00D4FF]/10 text-[#0066FF] px-3 py-1 rounded-full text-sm">
-                {plato.categoria}
+                {dish.category}
               </span>
             </div>
-            <p class="text-gray-600 mb-4">{plato.descripcion}</p>
+            <p class="text-gray-600 mb-4">{dish.description}</p>
             <div>
               <h4 class="text-sm font-semibold text-gray-500 mb-2">Ingredientes principales:</h4>
               <div class="flex flex-wrap gap-2">
-                {plato.ingredientes.map(ingrediente => (
+                {dish.ingredients.map(ingredient => (
                   <span class="bg-gradient-to-r from-[#0066FF]/10 to-[#00D4FF]/10 text-[#0066FF] px-2 py-1 rounded-full text-sm">
-                    {ingrediente}
+                    {ingredient}
                   </span>
                 ))}
               </div>
@@ -125,23 +177,48 @@ const restaurantes: Restaurante[] = [
   <section class="bg-gradient-to-b from-[#0066FF]/20 to-[#00D4FF]/20 rounded-lg p-6 sm:p-8 mb-12 sm:mb-16">
     <h2 class="text-2xl sm:text-3xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-6 sm:mb-8">Dónde Comer</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-      {restaurantes.map(restaurante => (
+      {restaurants.map(restaurant => (
         <article class="bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-lg overflow-hidden shadow-md p-4 sm:p-6">
-          <h3 class="text-lg sm:text-xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-2">{restaurante.nombre}</h3>
+          <h3 class="text-lg sm:text-xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-2">{restaurant.name}</h3>
           <div class="space-y-2 text-gray-600">
             <p class="flex items-center gap-2">
               <span class="text-[#0066FF]">📍</span>
-              {restaurante.ubicacion}
+              {restaurant.location}
             </p>
+            <div class="ml-6 text-sm">
+              <p class="mb-1">{restaurant.address}</p>
+              <a 
+                href={restaurant.googleMapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-[#0066FF] hover:underline inline-flex items-center gap-1"
+              >
+                <span>🗺️</span>
+                Cómo llegar
+              </a>
+            </div>
             <p class="flex items-center gap-2">
               <span class="text-[#0066FF]">🍽️</span>
-              {restaurante.especialidad}
+              {restaurant.specialty}
             </p>
             <p class="flex items-center gap-2">
               <span class="text-[#0066FF]">💰</span>
-              {restaurante.precio}
+              {restaurant.price}
             </p>
-            {restaurante.reserva && (
+            <p class="flex items-center gap-2">
+              <span class="text-[#0066FF]">🏷️</span>
+              {restaurant.type}
+            </p>
+            <a 
+              href={restaurant.url} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="text-[#0066FF] hover:underline flex items-center gap-2"
+            >
+              <span>🌐</span>
+              Visitar web
+            </a>
+            {restaurant.reservationNeeded && (
               <p class="text-[#0066FF]">
                 ✓ Se recomienda reservar
               </p>
@@ -157,19 +234,29 @@ const restaurantes: Restaurante[] = [
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
       <div class="bg-gradient-to-br from-white to-[#00D4FF]/5 p-4 sm:p-6 rounded-lg shadow-md">
         <h3 class="font-display text-lg sm:text-xl bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-3 sm:mb-4">Mercados Locales</h3>
-        <ul class="space-y-2 text-left">
-          <li class="flex items-center gap-2">
-            <span class="text-[#0066FF]">🏪</span>
-            <span>Mercado del Olivar (Palma)</span>
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-[#0066FF]">🌺</span>
-            <span>Mercado de Santa Catalina</span>
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-[#0066FF]">🌞</span>
-            <span>Mercado de Sineu (Miércoles)</span>
-          </li>
+        <ul class="space-y-4 text-left">
+          {localMarkets.map(market => (
+            <li>
+              <div class="flex items-center gap-2 font-medium">
+                <span class="text-[#0066FF]">🏪</span>
+                <span>{market.name} ({market.location})</span>
+              </div>
+              <div class="ml-7 text-sm text-gray-600">
+                <p class="mb-1">{market.address}</p>
+                <a 
+                  href={market.googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-[#0066FF] hover:underline inline-flex items-center gap-1 mb-2"
+                >
+                  <span>🗺️</span>
+                  Cómo llegar
+                </a>
+                <p>{market.days}</p>
+                <p>{market.hours}</p>
+              </div>
+            </li>
+          ))}
         </ul>
       </div>
       <div class="bg-gradient-to-br from-white to-[#00D4FF]/5 p-4 sm:p-6 rounded-lg shadow-md">
@@ -177,15 +264,15 @@ const restaurantes: Restaurante[] = [
         <ul class="space-y-2 text-left">
           <li class="flex items-center gap-2">
             <span class="text-[#0066FF]">🍷</span>
-            <span>Catas de vino en bodegas locales</span>
+            <span>Wine tastings in local wineries</span>
           </li>
           <li class="flex items-center gap-2">
             <span class="text-[#0066FF]">👨‍🍳</span>
-            <span>Clases de cocina tradicional</span>
+            <span>Traditional cooking classes</span>
           </li>
           <li class="flex items-center gap-2">
             <span class="text-[#0066FF]">🫒</span>
-            <span>Visitas a almazaras de aceite</span>
+            <span>Olive oil mill visits</span>
           </li>
         </ul>
       </div>
