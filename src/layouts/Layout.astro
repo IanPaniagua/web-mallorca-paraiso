@@ -14,10 +14,10 @@ const { title, showHeader = true, noPadding = false } = Astro.props;
 ---
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="Descubre el paraíso de Mallorca - Tu guía completa para explorar la isla">
+		<meta name="description" content="Discover the paradise of Mallorca - Your complete guide to explore the island">
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -32,7 +32,7 @@ const { title, showHeader = true, noPadding = false } = Astro.props;
 				<Header 
 					showHeader={showHeader}
 					title={title}
-					description="Descubre el paraíso de Mallorca"
+					description="Discover the paradise of Mallorca"
 				>
 					<slot name="header" />
 				</Header>

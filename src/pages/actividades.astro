@@ -154,18 +154,18 @@ const activityCategories: ActivityCategory[] = [
     </div>
   </div>
 
-  <!-- Categorías en horizontal -->
+  <!-- Categories in horizontal layout -->
   <div class="mb-8">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       {activityCategories.map(category => (
         <button 
           class="w-full text-left focus:outline-none category-button"
           onclick={`
-            // Ocultar todos los contenidos
+            // Hide all contents
             document.querySelectorAll('.activities-content').forEach(el => el.classList.add('hidden'));
-            // Mostrar el contenido seleccionado
+            // Show selected content
             document.getElementById('activities-${category.id}').classList.toggle('hidden');
-            // Marcar/desmarcar botón activo
+            // Toggle active button
             document.querySelectorAll('.category-button').forEach(btn => btn.classList.remove('active'));
             this.classList.toggle('active');
           `}
@@ -188,7 +188,7 @@ const activityCategories: ActivityCategory[] = [
     </div>
   </div>
 
-  <!-- Contenido de actividades (inicialmente oculto) -->
+  <!-- Activity content (initially hidden) -->
   {activityCategories.map(category => (
     <div id={`activities-${category.id}`} class="hidden activities-content mb-16">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -226,42 +226,7 @@ const activityCategories: ActivityCategory[] = [
 
                 <button 
                   class="mt-4 w-full bg-gradient-to-r from-[#0066FF] to-[#00D4FF] hover:from-[#0066FF]/90 hover:to-[#00D4FF]/90 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"
-                  onclick={`document.getElementById('providersModal').classList.remove('hidden');
-                           document.getElementById('providersContent').innerHTML = \`
-                             ${activity.providers.map(provider => `
-                               <article class="bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-lg overflow-hidden shadow-md">
-                                 <div class="h-40 relative">
-                                   <img 
-                                     src="${provider.image}" 
-                                     alt="${provider.name}"
-                                     class="absolute inset-0 w-full h-full object-cover"
-                                   />
-                                 </div>
-                                 <div class="p-4">
-                                   <h4 class="text-lg font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-2">
-                                     ${provider.name}
-                                   </h4>
-                                   <p class="text-gray-600 mb-2 flex items-center gap-2">
-                                     <span class="text-[#0066FF]">📍</span>
-                                     ${provider.address}
-                                   </p>
-                                   <p class="text-gray-600 mb-2 flex items-center gap-2">
-                                     <span class="text-[#0066FF]">📞</span>
-                                     ${provider.phone || 'No disponible'}
-                                   </p>
-                                   <a 
-                                     href="${provider.website}" 
-                                     target="_blank" 
-                                     rel="noopener noreferrer"
-                                     class="text-[#0066FF] hover:underline flex items-center gap-2"
-                                   >
-                                     <span>🌐</span>
-                                     Visitar web
-                                   </a>
-                                 </div>
-                               </article>
-                             `).join('')}
-                           \`;`}
+                  onclick={`showProviders('${activity.name}', ${JSON.stringify(activity.providers)})`}
                 >
                   Ver proveedores
                 </button>
@@ -273,25 +238,85 @@ const activityCategories: ActivityCategory[] = [
     </div>
   ))}
 
-  <!-- Modal para mostrar proveedores -->
-  <div id="providersModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50" onclick="if(event.target === this) this.classList.add('hidden')">
+  <!-- Providers Modal -->
+  <div id="providersModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50" onclick="if(event.target === this) closeModal()">
     <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl bg-white rounded-lg shadow-xl">
       <div class="p-6">
         <div class="flex justify-between items-center mb-6">
           <h3 class="text-2xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent">
             Proveedores
           </h3>
-          <button onclick="document.getElementById('providersModal').classList.add('hidden')" class="text-gray-500 hover:text-gray-700">
+          <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">
             ✕
           </button>
         </div>
         <div id="providersContent" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- El contenido se llenará dinámicamente -->
+          <!-- Content will be filled dynamically -->
         </div>
       </div>
     </div>
   </div>
 </Layout>
+
+<script>
+interface ActivityProvider {
+  name: string;
+  address: string;
+  website: string;
+  image: string;
+  phone?: string;
+  email?: string;
+}
+
+function showProviders(activityName: string, providers: ActivityProvider[]) {
+  const modal = document.getElementById('providersModal');
+  const content = document.getElementById('providersContent');
+  
+  if (!modal || !content) return;
+  
+  content.innerHTML = providers.map((provider: ActivityProvider) => `
+    <article class="bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-lg overflow-hidden shadow-md">
+      <div class="h-40 relative">
+        <img 
+          src="${provider.image}" 
+          alt="${provider.name}"
+          class="absolute inset-0 w-full h-full object-cover"
+        />
+      </div>
+      <div class="p-4">
+        <h4 class="text-lg font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-2">
+          ${provider.name}
+        </h4>
+        <p class="text-gray-600 mb-2 flex items-center gap-2">
+          <span class="text-[#0066FF]">📍</span>
+          ${provider.address}
+        </p>
+        <p class="text-gray-600 mb-2 flex items-center gap-2">
+          <span class="text-[#0066FF]">📞</span>
+          ${provider.phone || 'No disponible'}
+        </p>
+        <a 
+          href="${provider.website}" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="text-[#0066FF] hover:underline flex items-center gap-2"
+        >
+          <span>🌐</span>
+          Visitar web
+        </a>
+      </div>
+    </article>
+  `).join('');
+  
+  modal.classList.remove('hidden');
+}
+
+function closeModal() {
+  const modal = document.getElementById('providersModal');
+  if (!modal) return;
+  modal.classList.add('hidden');
+}
+</script>
 
 <style>
   .category-button {
