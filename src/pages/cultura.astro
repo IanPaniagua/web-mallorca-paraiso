@@ -1,146 +1,247 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const sitiosHistoricos = [
+interface MallorcanHeritage {
+  name: string;
+  description: string;
+  period: string;
+  highlight: string;
+  schedule: string;
+  openDays: string;
+  image: string;
+  address: string;
+  googleMapsUrl: string;
+}
+
+interface Tradition {
+  name: string;
+  description: string;
+  when: string;
+  image: string;
+}
+
+const historicalSites: MallorcanHeritage[] = [
   {
-    nombre: "Catedral de Palma",
-    descripcion: "La Seu, una impresionante catedral gótica junto al mar",
-    epoca: "Siglo XIII",
-    destacado: "Rosetón gótico más grande del mundo",
-    horario: "10:00 - 18:00",
-    imagen: "/images/catedral.jpg"
+    name: "Catedral de Palma",
+    description: "La Seu, una impresionante catedral gótica junto al mar",
+    period: "Siglo XIII",
+    highlight: "Rosetón gótico más grande del mundo",
+    schedule: "10:00 - 18:00",
+    openDays: "Lunes a Sábado",
+    image: "/images/catedral.jpg",
+    address: "Plaça de la Seu, s/n, 07001 Palma",
+    googleMapsUrl: "https://goo.gl/maps/YqN8YH8KGJ8Xp6zu8"
   },
   {
-    nombre: "Castillo de Bellver",
-    descripcion: "Único castillo circular de España con vistas panorámicas",
-    epoca: "Siglo XIV",
-    destacado: "Arquitectura gótica circular",
-    horario: "9:00 - 19:00",
-    imagen: "/images/bellver.jpg"
+    name: "Castillo de Bellver",
+    description: "Único castillo circular de España con vistas panorámicas",
+    period: "Siglo XIV",
+    highlight: "Arquitectura gótica circular",
+    schedule: "9:00 - 19:00",
+    openDays: "Martes a Domingo",
+    image: "/images/bellver.jpg",
+    address: "Carrer Camilo José Cela, s/n, 07014 Palma",
+    googleMapsUrl: "https://goo.gl/maps/L5H8QZ8KGJ8Xp6zu8"
   },
   {
-    nombre: "Real Cartuja de Valldemossa",
-    descripcion: "Antiguo monasterio donde residió Chopin",
-    epoca: "Siglo XIV",
-    destacado: "Celdas históricas y jardines",
-    horario: "10:00 - 17:00",
-    imagen: "/images/cartuja.jpg"
+    name: "Real Cartuja de Valldemossa",
+    description: "Antiguo monasterio donde residió Chopin",
+    period: "Siglo XIV",
+    highlight: "Celdas históricas y jardines",
+    schedule: "10:00 - 17:00",
+    openDays: "Todos los días",
+    image: "/images/cartuja.jpg",
+    address: "Plaza de la Cartuja, 07170 Valldemossa",
+    googleMapsUrl: "https://goo.gl/maps/N5H8QZ8KGJ8Xp6zu8"
   }
 ];
 
-const tradiciones = [
+const traditions: Tradition[] = [
   {
-    nombre: "Bailes tradicionales",
-    descripcion: "Ball de bot y otras danzas típicas mallorquinas",
-    cuando: "Festivales locales",
-    imagen: "/images/bailes.jpg"
+    name: "Bailes tradicionales",
+    description: "Ball de bot y otras danzas típicas mallorquinas",
+    when: "Festivales locales",
+    image: "/images/bailes.jpg"
   },
   {
-    nombre: "Fiestas de Sant Joan",
-    descripcion: "Celebraciones del solsticio de verano",
-    cuando: "24 de junio",
-    imagen: "/images/sant-joan.jpg"
+    name: "Fiestas de Sant Joan",
+    description: "Celebraciones del solsticio de verano",
+    when: "24 de junio",
+    image: "/images/sant-joan.jpg"
   },
   {
-    nombre: "Artesanía local",
-    descripcion: "Cerámica, vidrio soplado y textiles tradicionales",
-    cuando: "Todo el año",
-    imagen: "/images/artesania.jpg"
+    name: "Artesanía local",
+    description: "Cerámica, vidrio soplado y textiles tradicionales",
+    when: "Todo el año",
+    image: "/images/artesania.jpg"
   }
 ];
 ---
 
 <Layout title="Cultura de Mallorca - Historia y Tradiciones">
-  <div slot="header">
-    <h1 class="text-4xl md:text-5xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-4 py-2">Cultura y Patrimonio</h1>
-    <p class="text-lg text-gray-600 max-w-2xl mx-auto">Descubre la rica historia y las tradiciones vivas de Mallorca, una isla donde el pasado y el presente se entrelazan.</p>
+  <div slot="header" class="text-center">
+    <h1 class="text-4xl sm:text-5xl md:text-6xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-6">
+      Cultura y Patrimonio
+    </h1>
+    <p class="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+      Descubre la rica historia y las tradiciones vivas de Mallorca, una isla donde el pasado y el presente se entrelazan.
+    </p>
   </div>
 
-  <section class="mb-16">
-    <h2 class="text-3xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-8">Sitios Históricos</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      {sitiosHistoricos.map(sitio => (
-        <article class="bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-lg overflow-hidden shadow-lg">
-          <div class="h-48 relative">
-            <img 
-              src={sitio.imagen} 
-              alt={sitio.nombre}
-              class="absolute inset-0 w-full h-full object-cover"
-            />
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-2">{sitio.nombre}</h3>
-            <p class="text-gray-600 mb-4">{sitio.descripcion}</p>
-            <div class="space-y-2 text-sm">
-              <p><span class="font-semibold text-[#0066FF]">Época:</span> {sitio.epoca}</p>
-              <p><span class="font-semibold text-[#0066FF]">Destacado:</span> {sitio.destacado}</p>
-              <p><span class="font-semibold text-[#0066FF]">Horario:</span> {sitio.horario}</p>
+  <div class="space-y-16 sm:space-y-24">
+    <section>
+      <div class="text-center mb-8 sm:mb-12">
+        <h2 class="text-3xl sm:text-4xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent">
+          Sitios Históricos
+        </h2>
+        <p class="mt-4 text-gray-600 max-w-2xl mx-auto">
+          Explora los monumentos y lugares más emblemáticos de la isla.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {historicalSites.map(site => (
+          <article class="bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-lg overflow-hidden shadow-lg">
+            <div class="h-48 relative">
+              <img 
+                src={site.image} 
+                alt={site.name}
+                class="absolute inset-0 w-full h-full object-cover"
+              />
             </div>
-          </div>
-        </article>
-      ))}
-    </div>
-  </section>
-
-  <section class="bg-gradient-to-b from-[#0066FF]/20 to-[#00D4FF]/20 rounded-lg p-8 mb-16">
-    <h2 class="text-3xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-8">Tradiciones Vivas</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      {tradiciones.map(tradicion => (
-        <article class="bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-lg overflow-hidden shadow-md">
-          <div class="h-40 relative">
-            <img 
-              src={tradicion.imagen} 
-              alt={tradicion.nombre}
-              class="absolute inset-0 w-full h-full object-cover"
-            />
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-2">{tradicion.nombre}</h3>
-            <p class="text-gray-600 mb-2">{tradicion.descripcion}</p>
-            <p class="text-sm"><span class="font-semibold text-[#0066FF]">Cuándo:</span> {tradicion.cuando}</p>
-          </div>
-        </article>
-      ))}
-    </div>
-  </section>
-
-  <section class="text-center max-w-3xl mx-auto mb-16">
-    <h2 class="text-3xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-6">Calendario Cultural</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="bg-gradient-to-br from-white to-[#00D4FF]/5 p-6 rounded-lg shadow-md">
-        <h3 class="font-display text-xl bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-4">Festivales Destacados</h3>
-        <ul class="space-y-2 text-left">
-          <li class="flex items-center gap-2">
-            <span class="text-[#0066FF]">🎭</span>
-            <span>Feria del Teatro (Mayo)</span>
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-[#0066FF]">🎵</span>
-            <span>Festival de Jazz (Julio)</span>
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-[#0066FF]">🎨</span>
-            <span>Nit de l'Art (Septiembre)</span>
-          </li>
-        </ul>
+            <div class="p-6">
+              <h3 class="text-xl sm:text-2xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-4">
+                {site.name}
+              </h3>
+              <p class="text-gray-600 mb-4">{site.description}</p>
+              <div class="space-y-3 text-gray-600">
+                <p class="flex items-center gap-2">
+                  <span class="text-[#0066FF]">📍</span>
+                  {site.address}
+                </p>
+                <div class="ml-6">
+                  <a 
+                    href={site.googleMapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-[#0066FF] hover:underline inline-flex items-center gap-1"
+                  >
+                    <span>🗺️</span>
+                    Cómo llegar
+                  </a>
+                </div>
+                <div class="border-t border-[#0066FF]/10 pt-3 mt-3">
+                  <p class="flex items-center gap-2 mb-2">
+                    <span class="text-[#0066FF]">📅</span>
+                    <span class="font-medium">Época:</span> {site.period}
+                  </p>
+                  <p class="flex items-center gap-2 mb-2">
+                    <span class="text-[#0066FF]">✨</span>
+                    <span class="font-medium">Destacado:</span> {site.highlight}
+                  </p>
+                  <p class="flex items-center gap-2 mb-2">
+                    <span class="text-[#0066FF]">📆</span>
+                    <span class="font-medium">Días:</span> {site.openDays}
+                  </p>
+                  <p class="flex items-center gap-2">
+                    <span class="text-[#0066FF]">⏰</span>
+                    <span class="font-medium">Horario:</span> {site.schedule}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </article>
+        ))}
       </div>
-      <div class="bg-gradient-to-br from-white to-[#00D4FF]/5 p-6 rounded-lg shadow-md">
-        <h3 class="font-display text-xl bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-4">Fiestas Populares</h3>
-        <ul class="space-y-2 text-left">
-          <li class="flex items-center gap-2">
-            <span class="text-[#0066FF]">🔥</span>
-            <span>Sant Antoni (Enero)</span>
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-[#0066FF]">🌺</span>
-            <span>Corpus Christi (Junio)</span>
-          </li>
-          <li class="flex items-center gap-2">
-            <span class="text-[#0066FF]">🎉</span>
-            <span>Sant Sebastià (Enero)</span>
-          </li>
-        </ul>
+    </section>
+
+    <section>
+      <div class="text-center mb-8 sm:mb-12">
+        <h2 class="text-3xl sm:text-4xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent">
+          Tradiciones Vivas
+        </h2>
+        <p class="mt-4 text-gray-600 max-w-2xl mx-auto">
+          Descubre las costumbres y tradiciones que mantienen viva la cultura mallorquina.
+        </p>
       </div>
-    </div>
-  </section>
+
+      <div class="bg-gradient-to-b from-[#0066FF]/20 to-[#00D4FF]/20 rounded-lg p-6 sm:p-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {traditions.map(tradition => (
+            <article class="bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-lg overflow-hidden shadow-md">
+              <div class="h-40 relative">
+                <img 
+                  src={tradition.image} 
+                  alt={tradition.name}
+                  class="absolute inset-0 w-full h-full object-cover"
+                />
+              </div>
+              <div class="p-6">
+                <h3 class="text-xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-4">
+                  {tradition.name}
+                </h3>
+                <p class="text-gray-600 mb-4">{tradition.description}</p>
+                <p class="flex items-center gap-2">
+                  <span class="text-[#0066FF]">📅</span>
+                  <span class="font-medium">Cuándo:</span> {tradition.when}
+                </p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="text-center mb-8 sm:mb-12">
+        <h2 class="text-3xl sm:text-4xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent">
+          Calendario Cultural
+        </h2>
+        <p class="mt-4 text-gray-600 max-w-2xl mx-auto">
+          Eventos y celebraciones más destacadas a lo largo del año.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-gradient-to-br from-white to-[#00D4FF]/5 p-6 rounded-lg shadow-md">
+          <h3 class="font-display text-xl bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-4">
+            Festivales Destacados
+          </h3>
+          <ul class="space-y-2 text-left">
+            <li class="flex items-center gap-2">
+              <span class="text-[#0066FF]">🎭</span>
+              <span>Feria del Teatro (Mayo)</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="text-[#0066FF]">🎵</span>
+              <span>Festival de Jazz (Julio)</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="text-[#0066FF]">🎨</span>
+              <span>Nit de l'Art (Septiembre)</span>
+            </li>
+          </ul>
+        </div>
+        <div class="bg-gradient-to-br from-white to-[#00D4FF]/5 p-6 rounded-lg shadow-md">
+          <h3 class="font-display text-xl bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-4">
+            Fiestas Populares
+          </h3>
+          <ul class="space-y-2 text-left">
+            <li class="flex items-center gap-2">
+              <span class="text-[#0066FF]">🔥</span>
+              <span>Sant Antoni (Enero)</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="text-[#0066FF]">🌺</span>
+              <span>Corpus Christi (Junio)</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="text-[#0066FF]">🎉</span>
+              <span>Sant Sebastià (Enero)</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
 </Layout> 
