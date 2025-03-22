@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import BeachesSidebar from '../components/BeachesSidebar';
+import CardBeachDetail from '../components/CardBeachDetail';
 import type { Beach, BeachFilters } from '../api/types/beach.types';
 import { API_ENDPOINTS } from '../config/api';
 import { fetchFromBackend } from '../utils/api';
@@ -46,6 +47,25 @@ const description = "Descubre los rincones más paradisíacos de la costa mallor
   <script define:vars={{ regions, towns, types, ITEMS_PER_PAGE, beaches }}>
     let currentPage = 1;
     let visibleBeaches = beaches;
+    let selectedBeachId = null;
+
+    function showBeachDetails(beachId) {
+      selectedBeachId = beachId;
+      const detailComponent = document.querySelector(`beach-detail-${beachId}`);
+      if (detailComponent) {
+        detailComponent.setAttribute('isOpen', 'true');
+      }
+    }
+
+    function hideBeachDetails() {
+      if (selectedBeachId) {
+        const detailComponent = document.querySelector(`beach-detail-${selectedBeachId}`);
+        if (detailComponent) {
+          detailComponent.setAttribute('isOpen', 'false');
+        }
+        selectedBeachId = null;
+      }
+    }
 
     // Funciones para el modal
     function openModal(beachId) {
@@ -153,6 +173,10 @@ const description = "Descubre los rincones más paradisíacos de la costa mallor
 
       filterBeaches({ search: '', region: '', town: '', type: '' });
     });
+
+    // Expose functions to window for onclick handlers
+    window.showBeachDetails = showBeachDetails;
+    window.hideBeachDetails = hideBeachDetails;
   </script>
 
   <div class="min-h-screen flex flex-col">
@@ -179,6 +203,7 @@ const description = "Descubre los rincones más paradisíacos de la costa mallor
                 data-town={beach.locality.name}
                 data-type={beach.category}
                 data-name={beach.name.toLowerCase()}
+                data-beach-id={beach.id}
               >
                 <div class="relative w-full h-48">
                   <img 
@@ -201,8 +226,8 @@ const description = "Descubre los rincones más paradisíacos de la costa mallor
                   
                   <div class="flex items-center gap-2 text-xs mt-auto">
                     <button 
-                      onclick={`openModal(${beach.id})`}
-                      class="text-[#0066FF] hover:underline inline-flex items-center gap-1"
+                      class="text-[#0066FF] hover:underline inline-flex items-center gap-1 show-details"
+                      data-beach-id={beach.id}
                     >
                       <span>✨</span>
                       Ver detalles
@@ -221,85 +246,13 @@ const description = "Descubre los rincones más paradisíacos de la costa mallor
                 </div>
               </article>
 
-              <!-- Modal para cada playa -->
-              <div 
-                id={`modal-${beach.id}`}
-                class="fixed inset-0 z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300"
-              >
-                <div class="bg-white rounded-lg shadow-xl w-full max-w-5xl mx-4 overflow-hidden relative">
-                  <div class="relative h-[70vh] rounded-t-lg overflow-hidden">
-                    <img 
-                      src={beach.image || 'https://mallorca-paraiso-web.s3.eu-central-1.amazonaws.com/beach.jpg'} 
-                      alt={`Playa ${beach.name}`}
-                      class="w-full h-full object-cover"
-                    />
-                    <button 
-                      onclick={`closeModal(${beach.id})`}
-                      class="absolute top-4 right-4 bg-white/80 hover:bg-white text-gray-800 rounded-full p-2 backdrop-blur-sm transition-colors"
-                    >
-                      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                      </svg>
-                    </button>
-                  </div>
-
-                  <div class="p-8 bg-white">
-                    <div class="max-w-3xl mx-auto">
-                      <div class="mb-6">
-                        <h3 class="text-3xl font-display text-gray-800 mb-2">
-                          {beach.name}
-                        </h3>
-                        <p class="text-gray-500 flex items-center gap-2">
-                          <span>📍</span>
-                          {beach.locality.name}, {beach.locality.zone.name}
-                        </p>
-                      </div>
-
-                      <div class="space-y-6">
-                        <div>
-                          <h4 class="text-lg font-medium text-gray-800 mb-3">Sobre esta playa</h4>
-                          <p class="text-gray-600 leading-relaxed">{beach.description}</p>
-                        </div>
-
-                        <div class="flex flex-wrap gap-3">
-                          <span class="text-gray-600 flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-full text-sm">
-                            <span class="text-[#0066FF]">🏖️</span>
-                            {beach.category}
-                          </span>
-                          <span class="text-gray-600 flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-full text-sm">
-                            <span class="text-[#0066FF]">🚗</span>
-                            {beach.access}
-                          </span>
-                        </div>
-
-                        <div>
-                          <h4 class="text-lg font-medium text-gray-800 mb-3">Servicios disponibles</h4>
-                          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                            {beach.services.map(service => (
-                              <span class="text-gray-600 flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-xl text-sm">
-                                <span class="text-[#0066FF]">•</span>
-                                {service}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div class="pt-4">
-                          <a 
-                            href={`https://www.google.com/maps?q=${beach.latitude},${beach.longitude}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="inline-flex items-center gap-2 text-[#0066FF] hover:text-[#00D4FF] transition-colors"
-                          >
-                            <span>🗺️</span>
-                            <span>Ver ubicación en Google Maps</span>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <CardBeachDetail
+                client:load
+                beach={beach}
+                onClose={() => {}}
+                isOpen={false}
+                id={`beach-detail-${beach.id}`}
+              />
             </>
           ))}
         </div>
@@ -352,4 +305,61 @@ const description = "Descubre los rincones más paradisíacos de la costa mallor
     </div>
   </section>
 </Layout>
+
+<script>
+  let activeDetailComponent: HTMLElement | null = null;
+
+  function showBeachDetails(beachId: string | number) {
+    // Ocultar el modal activo si existe
+    if (activeDetailComponent) {
+      activeDetailComponent.style.display = 'none';
+    }
+
+    // Mostrar el nuevo modal
+    const detailComponent = document.getElementById(`beach-detail-${beachId}`);
+    if (detailComponent) {
+      detailComponent.style.display = 'flex';
+      activeDetailComponent = detailComponent;
+      // Bloquear scroll del body
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function hideBeachDetails() {
+    if (activeDetailComponent) {
+      activeDetailComponent.style.display = 'none';
+      activeDetailComponent = null;
+      // Restaurar scroll del body
+      document.body.style.overflow = 'auto';
+    }
+  }
+
+  // Event Listeners
+  document.addEventListener('click', (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    
+    // Abrir modal
+    const detailButton = target.closest('.show-details') as HTMLElement;
+    if (detailButton) {
+      const beachId = detailButton.dataset.beachId;
+      if (beachId) {
+        showBeachDetails(beachId);
+      }
+    }
+
+    // Cerrar modal al hacer clic en el backdrop o el botón de cerrar
+    if (target.classList.contains('backdrop-blur-sm') || 
+        target.closest('button[aria-label="Cerrar modal"]') ||
+        target.closest('path')) {
+      hideBeachDetails();
+    }
+  });
+
+  // Cerrar con la tecla Escape
+  document.addEventListener('keydown', (e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      hideBeachDetails();
+    }
+  });
+</script>
 
