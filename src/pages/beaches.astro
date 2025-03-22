@@ -8,6 +8,13 @@ import { fetchFromBackend } from '../utils/api';
 // Fetch data at build time (equivalent to getStaticProps)
 const beaches = await fetchFromBackend<Beach[]>(API_ENDPOINTS.beaches.getAll);
 
+// Debug: Log the received data with focus on images
+console.log('Beaches data:', beaches);
+console.log('Beach images:', beaches.map(beach => ({
+  name: beach.name,
+  image: beach.image
+})));
+
 // Constants for filters
 const regions = [
   "Norte",
@@ -116,10 +123,11 @@ const description = "Descubre los rincones más paradisíacos de la costa mallor
         >
           <div class="relative">
             <img 
-              src={beach.image} 
+              src={beach.image || 'https://mallorca-paraiso-web.s3.eu-central-1.amazonaws.com/beach.jpg'} 
               alt={`Playa ${beach.name}`}
               class="w-full h-48 object-cover"
               loading="lazy"
+              onerror="this.src='https://mallorca-paraiso-web.s3.eu-central-1.amazonaws.com/beach.jpg'; this.onerror=null;"
             />
             {beach.featured && (
               <span class="absolute top-2 right-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full">
