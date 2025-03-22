@@ -13,6 +13,9 @@ const regions = [...new Set(beaches.map(beach => beach.locality.zone.name))];
 const towns = [...new Set(beaches.map(beach => beach.locality.name))];
 const types = [...new Set(beaches.map(beach => beach.category))];
 
+// Configuración de paginación
+const ITEMS_PER_PAGE = 9;
+
 // Generate metadata for SEO
 const title = "Playas de Mallorca - Calas y Playas Paradisíacas";
 const description = "Descubre los rincones más paradisíacos de la costa mallorquina. Encuentra información detallada sobre las mejores playas y calas de Mallorca.";
@@ -40,10 +43,35 @@ const description = "Descubre los rincones más paradisíacos de la costa mallor
     </div>
   </div>
 
-  <script define:vars={{ regions, towns, types }}>
+  <script define:vars={{ regions, towns, types, ITEMS_PER_PAGE, beaches }}>
+    let currentPage = 1;
+    let visibleBeaches = beaches;
+
+    function updateVisibleBeaches() {
+      const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+      const endIndex = startIndex + ITEMS_PER_PAGE;
+      const articles = document.querySelectorAll('#beachesGrid article');
+      
+      articles.forEach((article, index) => {
+        if (index >= startIndex && index < endIndex) {
+          article.style.display = 'flex';
+        } else {
+          article.style.display = 'none';
+        }
+      });
+
+      // Actualizar botones y contador
+      const totalPages = Math.ceil(visibleBeaches.length / ITEMS_PER_PAGE);
+      document.getElementById('currentPage').textContent = currentPage.toString();
+      document.getElementById('totalPages').textContent = totalPages.toString();
+      document.getElementById('prevPage').disabled = currentPage === 1;
+      document.getElementById('nextPage').disabled = currentPage === totalPages;
+    }
+
     // Function to filter beaches
     function filterBeaches(filters) {
       const articles = document.querySelectorAll('#beachesGrid article');
+      let visibleCount = 0;
       
       articles.forEach(article => {
         const region = article.dataset.region;
@@ -66,113 +94,158 @@ const description = "Descubre los rincones más paradisíacos de la costa mallor
         const isVisible = matchesSearch && matchesRegion && 
           matchesTown && matchesType;
         
+        if (isVisible) visibleCount++;
         article.style.display = isVisible ? 'flex' : 'none';
       });
+
+      visibleBeaches = Array.from(articles).filter(article => article.style.display !== 'none');
+      currentPage = 1;
+      updateVisibleBeaches();
     }
 
-    // Initialize filters when page loads
+    // Initialize filters and pagination when page loads
     document.addEventListener('DOMContentLoaded', () => {
+      // Añadir eventos de paginación
+      document.getElementById('prevPage').addEventListener('click', () => {
+        if (currentPage > 1) {
+          currentPage--;
+          updateVisibleBeaches();
+        }
+      });
+
+      document.getElementById('nextPage').addEventListener('click', () => {
+        const totalPages = Math.ceil(visibleBeaches.length / ITEMS_PER_PAGE);
+        if (currentPage < totalPages) {
+          currentPage++;
+          updateVisibleBeaches();
+        }
+      });
+
       filterBeaches({ search: '', region: '', town: '', type: '' });
     });
   </script>
 
-  <div class="flex">
-    <BeachesSidebar 
-      client:load
-      regions={regions}
-      towns={towns}
-      types={types}
-    />
-    <div id="beachesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 flex-1 p-6">
-      {beaches.map((beach) => (
-        <article 
-          class="bg-white rounded-lg shadow-sm overflow-hidden flex flex-col"
-          data-region={beach.locality.zone.name}
-          data-town={beach.locality.name}
-          data-type={beach.category}
-          data-name={beach.name.toLowerCase()}
-        >
-          <div class="relative">
-            <img 
-              src={beach.image || 'https://mallorca-paraiso-web.s3.eu-central-1.amazonaws.com/beach.jpg'} 
-              alt={`Playa ${beach.name}`}
-              class="w-full h-48 object-cover"
-              loading="lazy"
-              onerror="this.src='https://mallorca-paraiso-web.s3.eu-central-1.amazonaws.com/beach.jpg'; this.onerror=null;"
-            />
-            {beach.featured && (
-              <span class="absolute top-2 right-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full">
-                Destacada
-              </span>
-            )}
-          </div>
-          <div class="p-4">
-            <h3 class="text-xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-2">
-              {beach.name}
-            </h3>
-            <p class="text-gray-600 mb-4">{beach.description}</p>
-            <div class="space-y-2 text-sm text-gray-600">
-              <p class="flex items-center gap-2">
-                <span class="text-[#0066FF]">📍</span>
-                {beach.locality.name}, {beach.locality.zone.name}
-              </p>
-              <p class="flex items-center gap-2">
-                <span class="text-[#0066FF]">🏖️</span>
-                {beach.category} ({beach.type})
-              </p>
-              <p class="flex items-center gap-2">
-                <span class="text-[#0066FF]">🚗</span>
-                {beach.access}
-              </p>
-              <a 
-                href={`https://www.google.com/maps?q=${beach.latitude},${beach.longitude}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="flex items-center gap-2 text-[#0066FF] hover:text-[#00D4FF] transition-colors"
-              >
-                <span>🗺️</span>
-                Cómo llegar
-              </a>
+  <div class="flex h-[calc(100vh-64px)]">
+    <div class="sticky top-0 h-screen">
+      <BeachesSidebar 
+        client:load
+        regions={regions}
+        towns={towns}
+        types={types}
+      />
+    </div>
+    <div class="flex-1 overflow-y-auto p-6">
+      <div id="beachesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {beaches.map((beach) => (
+          <article 
+            class="bg-white rounded-lg shadow-sm overflow-hidden flex flex-col"
+            data-region={beach.locality.zone.name}
+            data-town={beach.locality.name}
+            data-type={beach.category}
+            data-name={beach.name.toLowerCase()}
+          >
+            <div class="relative">
+              <img 
+                src={beach.image || 'https://mallorca-paraiso-web.s3.eu-central-1.amazonaws.com/beach.jpg'} 
+                alt={`Playa ${beach.name}`}
+                class="w-full h-48 object-cover"
+                loading="lazy"
+                onerror="this.src='https://mallorca-paraiso-web.s3.eu-central-1.amazonaws.com/beach.jpg'; this.onerror=null;"
+              />
+              {beach.featured && (
+                <span class="absolute top-2 right-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full">
+                  Destacada
+                </span>
+              )}
             </div>
-            <div class="mt-4">
-              <h4 class="text-sm font-semibold text-gray-500 mb-2">Servicios</h4>
-              <div class="flex flex-wrap gap-2">
-                {beach.services.map(service => (
-                  <span class="bg-gradient-to-r from-[#0066FF]/10 to-[#00D4FF]/10 text-[#0066FF] px-3 py-1 rounded-full text-sm">
-                    {service}
-                  </span>
-                ))}
+            <div class="p-4">
+              <h3 class="text-xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-2">
+                {beach.name}
+              </h3>
+              <p class="text-gray-600 mb-4">{beach.description}</p>
+              <div class="space-y-2 text-sm text-gray-600">
+                <p class="flex items-center gap-2">
+                  <span class="text-[#0066FF]">📍</span>
+                  {beach.locality.name}, {beach.locality.zone.name}
+                </p>
+                <p class="flex items-center gap-2">
+                  <span class="text-[#0066FF]">🏖️</span>
+                  {beach.category} ({beach.type})
+                </p>
+                <p class="flex items-center gap-2">
+                  <span class="text-[#0066FF]">🚗</span>
+                  {beach.access}
+                </p>
+                <a 
+                  href={`https://www.google.com/maps?q=${beach.latitude},${beach.longitude}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-2 text-[#0066FF] hover:text-[#00D4FF] transition-colors"
+                >
+                  <span>🗺️</span>
+                  Cómo llegar
+                </a>
+              </div>
+              <div class="mt-4">
+                <h4 class="text-sm font-semibold text-gray-500 mb-2">Servicios</h4>
+                <div class="flex flex-wrap gap-2">
+                  {beach.services.map(service => (
+                    <span class="bg-gradient-to-r from-[#0066FF]/10 to-[#00D4FF]/10 text-[#0066FF] px-3 py-1 rounded-full text-sm">
+                      {service}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
+          </article>
+        ))}
+      </div>
+
+      <!-- Controles de paginación -->
+      <div class="mt-8 flex justify-center items-center gap-2">
+        <button 
+          id="prevPage" 
+          class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Anterior
+        </button>
+        <span class="text-gray-600 mx-4">
+          Página <span id="currentPage">1</span> de <span id="totalPages">1</span>
+        </span>
+        <button 
+          id="nextPage" 
+          class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Siguiente
+        </button>
+      </div>
+
+      <!-- Consejos Section -->
+      <section class="bg-gradient-to-b from-[#0066FF]/20 to-[#00D4FF]/20 py-12 px-4 rounded-lg my-12">
+        <div class="max-w-3xl mx-auto text-center">
+          <h2 class="text-3xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-6">
+            Consejos para tu visita
+          </h2>
+          <div class="grid md:grid-cols-3 gap-6">
+            <div>
+              <div class="text-2xl mb-2">🌊</div>
+              <h3 class="font-display text-lg mb-2">Mejor temporada</h3>
+              <p class="text-gray-600">Mayo a Octubre son los meses ideales para disfrutar del mar</p>
+            </div>
+            <div>
+              <div class="text-2xl mb-2">🧴</div>
+              <h3 class="font-display text-lg mb-2">Protección</h3>
+              <p class="text-gray-600">No olvides protector solar y sombrilla en las calas sin servicios</p>
+            </div>
+            <div>
+              <div class="text-2xl mb-2">⏰</div>
+              <h3 class="font-display text-lg mb-2">Horario</h3>
+              <p class="text-gray-600">Visita temprano para encontrar mejor parking y menos gente</p>
+            </div>
           </div>
-        </article>
-      ))}
+        </div>
+      </section>
     </div>
   </div>
-
-  <section class="bg-gradient-to-b from-[#0066FF]/20 to-[#00D4FF]/20 py-12 px-4 rounded-lg mb-12">
-    <div class="max-w-3xl mx-auto text-center">
-      <h2 class="text-3xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-6">
-        Consejos para tu visita
-      </h2>
-      <div class="grid md:grid-cols-3 gap-6">
-        <div>
-          <div class="text-2xl mb-2">🌊</div>
-          <h3 class="font-display text-lg mb-2">Mejor temporada</h3>
-          <p class="text-gray-600">Mayo a Octubre son los meses ideales para disfrutar del mar</p>
-        </div>
-        <div>
-          <div class="text-2xl mb-2">🧴</div>
-          <h3 class="font-display text-lg mb-2">Protección</h3>
-          <p class="text-gray-600">No olvides protector solar y sombrilla en las calas sin servicios</p>
-        </div>
-        <div>
-          <div class="text-2xl mb-2">⏰</div>
-          <h3 class="font-display text-lg mb-2">Horario</h3>
-          <p class="text-gray-600">Visita temprano para encontrar mejor parking y menos gente</p>
-        </div>
-      </div>
-    </div>
-  </section>
 </Layout>
 

@@ -90,8 +90,8 @@ export default function BeachesSidebar({ regions, towns, types }: BeachesSidebar
   };
 
   return (
-    <aside className="w-64 p-6 bg-white shadow-sm">
-      <h2 className="text-lg font-display mb-4">Filtros</h2>
+    <aside className="w-64 p-6 bg-white shadow-sm h-screen overflow-y-auto">
+      <h2 className="text-lg font-display mb-4 sticky top-0 bg-white pt-2">Filtros</h2>
       
       <div className="space-y-4">
         <div>
