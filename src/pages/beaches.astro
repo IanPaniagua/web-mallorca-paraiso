@@ -47,6 +47,23 @@ const description = "Descubre los rincones más paradisíacos de la costa mallor
     let currentPage = 1;
     let visibleBeaches = beaches;
 
+    // Funciones para el modal
+    function openModal(beachId) {
+      const modal = document.getElementById(`modal-${beachId}`);
+      const backdrop = document.getElementById('modal-backdrop');
+      document.body.style.overflow = 'hidden';
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      backdrop.classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function closeModal(beachId) {
+      const modal = document.getElementById(`modal-${beachId}`);
+      const backdrop = document.getElementById('modal-backdrop');
+      document.body.style.overflow = 'auto';
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+    }
+
     function updateVisibleBeaches() {
       const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
       const endIndex = startIndex + ITEMS_PER_PAGE;
@@ -121,11 +138,27 @@ const description = "Descubre los rincones más paradisíacos de la costa mallor
         }
       });
 
+      // Cerrar modal con la tecla Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          const modals = document.querySelectorAll('[id^="modal-"]');
+          modals.forEach(modal => {
+            if (!modal.classList.contains('opacity-0')) {
+              const beachId = modal.id.replace('modal-', '');
+              closeModal(beachId);
+            }
+          });
+        }
+      });
+
       filterBeaches({ search: '', region: '', town: '', type: '' });
     });
   </script>
 
   <div class="min-h-screen flex flex-col">
+    <!-- Modal Backdrop -->
+    <div id="modal-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
     <!-- Main Content Section -->
     <div class="flex flex-1">
       <div class="w-64 sticky top-0 h-screen">
@@ -136,70 +169,138 @@ const description = "Descubre los rincones más paradisíacos de la costa mallor
           types={types}
         />
       </div>
-      <div class="flex-1 p-6 overflow-y-auto">
-        <div id="beachesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="flex-1 p-6">
+        <div id="beachesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {beaches.map((beach) => (
-            <article 
-              class="bg-white rounded-lg shadow-sm overflow-hidden flex flex-col"
-              data-region={beach.locality.zone.name}
-              data-town={beach.locality.name}
-              data-type={beach.category}
-              data-name={beach.name.toLowerCase()}
-            >
-              <div class="relative">
-                <img 
-                  src={beach.image || 'https://mallorca-paraiso-web.s3.eu-central-1.amazonaws.com/beach.jpg'} 
-                  alt={`Playa ${beach.name}`}
-                  class="w-full h-48 object-cover"
-                  loading="lazy"
-                  onerror="this.src='https://mallorca-paraiso-web.s3.eu-central-1.amazonaws.com/beach.jpg'; this.onerror=null;"
-                />
-                {beach.featured && (
-                  <span class="absolute top-2 right-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full">
-                    Destacada
-                  </span>
-                )}
-              </div>
-              <div class="p-4">
-                <h3 class="text-xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-2">
-                  {beach.name}
-                </h3>
-                <p class="text-gray-600 mb-4">{beach.description}</p>
-                <div class="space-y-2 text-sm text-gray-600">
-                  <p class="flex items-center gap-2">
+            <>
+              <article 
+                class="bg-gradient-to-br from-white to-[#00D4FF]/5 rounded-lg overflow-hidden shadow-lg flex flex-col"
+                data-region={beach.locality.zone.name}
+                data-town={beach.locality.name}
+                data-type={beach.category}
+                data-name={beach.name.toLowerCase()}
+              >
+                <div class="relative w-full h-48">
+                  <img 
+                    src={beach.image || 'https://mallorca-paraiso-web.s3.eu-central-1.amazonaws.com/beach.jpg'} 
+                    alt={`Playa ${beach.name}`}
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                    onerror="this.src='https://mallorca-paraiso-web.s3.eu-central-1.amazonaws.com/beach.jpg'; this.onerror=null;"
+                  />
+                </div>
+
+                <div class="p-6 flex flex-col flex-1">
+                  <h3 class="text-xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-2">
+                    {beach.name}
+                  </h3>
+                  <p class="text-xs text-gray-600 flex items-center gap-1.5 mb-3">
                     <span class="text-[#0066FF]">📍</span>
                     {beach.locality.name}, {beach.locality.zone.name}
                   </p>
-                  <p class="flex items-center gap-2">
-                    <span class="text-[#0066FF]">🏖️</span>
-                    {beach.category} ({beach.type})
-                  </p>
-                  <p class="flex items-center gap-2">
-                    <span class="text-[#0066FF]">🚗</span>
-                    {beach.access}
-                  </p>
-                  <a 
-                    href={`https://www.google.com/maps?q=${beach.latitude},${beach.longitude}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="flex items-center gap-2 text-[#0066FF] hover:text-[#00D4FF] transition-colors"
-                  >
-                    <span>🗺️</span>
-                    Cómo llegar
-                  </a>
+                  
+                  <div class="flex items-center gap-2 text-xs mt-auto">
+                    <button 
+                      onclick={`openModal(${beach.id})`}
+                      class="text-[#0066FF] hover:underline inline-flex items-center gap-1"
+                    >
+                      <span>✨</span>
+                      Ver detalles
+                    </button>
+                    <span class="text-gray-300">•</span>
+                    <a 
+                      href={`https://www.google.com/maps?q=${beach.latitude},${beach.longitude}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-[#0066FF] hover:underline inline-flex items-center gap-1"
+                    >
+                      <span>🗺️</span>
+                      Cómo llegar
+                    </a>
+                  </div>
                 </div>
-                <div class="mt-4">
-                  <h4 class="text-sm font-semibold text-gray-500 mb-2">Servicios</h4>
-                  <div class="flex flex-wrap gap-2">
-                    {beach.services.map(service => (
-                      <span class="bg-gradient-to-r from-[#0066FF]/10 to-[#00D4FF]/10 text-[#0066FF] px-3 py-1 rounded-full text-sm">
-                        {service}
-                      </span>
-                    ))}
+              </article>
+
+              <!-- Modal para cada playa -->
+              <div 
+                id={`modal-${beach.id}`}
+                class="fixed inset-0 z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300"
+              >
+                <div class="bg-white rounded-lg shadow-xl w-full max-w-5xl mx-4 overflow-hidden relative">
+                  <div class="relative h-[70vh] rounded-t-lg overflow-hidden">
+                    <img 
+                      src={beach.image || 'https://mallorca-paraiso-web.s3.eu-central-1.amazonaws.com/beach.jpg'} 
+                      alt={`Playa ${beach.name}`}
+                      class="w-full h-full object-cover"
+                    />
+                    <button 
+                      onclick={`closeModal(${beach.id})`}
+                      class="absolute top-4 right-4 bg-white/80 hover:bg-white text-gray-800 rounded-full p-2 backdrop-blur-sm transition-colors"
+                    >
+                      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                      </svg>
+                    </button>
+                  </div>
+
+                  <div class="p-8 bg-white">
+                    <div class="max-w-3xl mx-auto">
+                      <div class="mb-6">
+                        <h3 class="text-3xl font-display text-gray-800 mb-2">
+                          {beach.name}
+                        </h3>
+                        <p class="text-gray-500 flex items-center gap-2">
+                          <span>📍</span>
+                          {beach.locality.name}, {beach.locality.zone.name}
+                        </p>
+                      </div>
+
+                      <div class="space-y-6">
+                        <div>
+                          <h4 class="text-lg font-medium text-gray-800 mb-3">Sobre esta playa</h4>
+                          <p class="text-gray-600 leading-relaxed">{beach.description}</p>
+                        </div>
+
+                        <div class="flex flex-wrap gap-3">
+                          <span class="text-gray-600 flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-full text-sm">
+                            <span class="text-[#0066FF]">🏖️</span>
+                            {beach.category}
+                          </span>
+                          <span class="text-gray-600 flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-full text-sm">
+                            <span class="text-[#0066FF]">🚗</span>
+                            {beach.access}
+                          </span>
+                        </div>
+
+                        <div>
+                          <h4 class="text-lg font-medium text-gray-800 mb-3">Servicios disponibles</h4>
+                          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                            {beach.services.map(service => (
+                              <span class="text-gray-600 flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-xl text-sm">
+                                <span class="text-[#0066FF]">•</span>
+                                {service}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div class="pt-4">
+                          <a 
+                            href={`https://www.google.com/maps?q=${beach.latitude},${beach.longitude}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="inline-flex items-center gap-2 text-[#0066FF] hover:text-[#00D4FF] transition-colors"
+                          >
+                            <span>🗺️</span>
+                            <span>Ver ubicación en Google Maps</span>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </article>
+            </>
           ))}
         </div>
 
