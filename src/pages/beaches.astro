@@ -1,26 +1,14 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import BeachesSidebar from '../components/BeachesSidebar';
+import type { Beach, BeachFilters } from '../api/types/beach.types';
+import { API_ENDPOINTS } from '../config/api';
+import { fetchFromBackend } from '../utils/api';
 
-interface Filters {
-  search: string;
-  region: string;
-  town: string;
-  type: string;
-}
+// Fetch data at build time (equivalent to getStaticProps)
+const beaches = await fetchFromBackend<Beach[]>(API_ENDPOINTS.beaches.getAll);
 
-interface Beach {
-  name: string;
-  image: string;
-  description: string;
-  region: string;
-  town: string;
-  type: string;
-  services: string[];
-  access: string;
-  featured: boolean;
-}
-
+// Constants for filters
 const regions = [
   "Norte",
   "Sur",
@@ -47,55 +35,22 @@ const types = [
   "Playa"
 ];
 
-const beaches: Beach[] = [
-  {
-    name: "Playa de Alcúdia",
-    image: "/images/alcudia.jpg",
-    description: "Una de las playas más largas de Mallorca, con aguas cristalinas y arena blanca.",
-    region: "Norte",
-    town: "Alcúdia",
-    type: "Playa",
-    services: ["Duchas", "Hamacas", "Restaurantes", "Deportes acuáticos"],
-    access: "Fácil acceso, parking gratuito",
-    featured: true
-  },
-  {
-    name: "Cala Mesquida",
-    image: "/images/rock.jpg",
-    description: "Extensa playa de arena blanca rodeada de dunas y pinos",
-    region: "Este",
-    town: "Capdepera",
-    type: "Cala",
-    services: ["Parking", "Restaurantes", "Tumbonas", "Socorrista"],
-    access: "Acceso por carretera asfaltada",
-    featured: false
-  },
-  {
-    name: "Cala Varques",
-    image: "/images/cala-varques.jpg",
-    description: "Cala virgen de aguas cristalinas, perfecta para snorkel",
-    region: "Este",
-    town: "Manacor",
-    type: "Cala",
-    services: ["Snorkel", "Acantilados", "Naturaleza"],
-    access: "Acceso a pie (15 min)",
-    featured: false
-  },
-  {
-    name: "Es Trenc",
-    image: "/images/es-trenc.jpg",
-    description: "Playa paradisíaca de aspecto caribeño",
-    region: "Sur",
-    town: "Campos",
-    type: "Playa",
-    services: ["Chiringuitos", "Tumbonas", "Deportes acuáticos", "Parking"],
-    access: "Parking de pago disponible",
-    featured: true
-  }
-];
+// Generate metadata for SEO
+const title = "Playas de Mallorca - Calas y Playas Paradisíacas";
+const description = "Descubre los rincones más paradisíacos de la costa mallorquina. Encuentra información detallada sobre las mejores playas y calas de Mallorca.";
 ---
 
-<Layout title="Playas de Mallorca - Calas y Playas Paradisíacas">
+<Layout title={title}>
+  <head slot="head">
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+  </head>
+
   <div slot="header">
     <div class="py-2">
       <h1 class="text-3xl sm:text-4xl md:text-5xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-4">
@@ -107,10 +62,9 @@ const beaches: Beach[] = [
     </div>
   </div>
 
-  <script is:inline>
+  <script define:vars={{ regions, towns, types }}>
+    // Function to filter beaches
     function filterBeaches(filters) {
-      console.log('Applying filters:', filters);
-      
       const articles = document.querySelectorAll('#beachesGrid article');
       
       articles.forEach(article => {
@@ -134,14 +88,12 @@ const beaches: Beach[] = [
         const isVisible = matchesSearch && matchesRegion && 
           matchesTown && matchesType;
         
-        console.log('Beach:', name, 'Visible:', isVisible);
         article.style.display = isVisible ? 'flex' : 'none';
       });
     }
 
     // Initialize filters when page loads
     document.addEventListener('DOMContentLoaded', () => {
-      console.log('Initializing filters...');
       filterBeaches({ search: '', region: '', town: '', type: '' });
     });
   </script>
@@ -167,6 +119,7 @@ const beaches: Beach[] = [
               src={beach.image} 
               alt={`Playa ${beach.name}`}
               class="w-full h-48 object-cover"
+              loading="lazy"
             />
             {beach.featured && (
               <span class="absolute top-2 right-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full">
@@ -211,7 +164,9 @@ const beaches: Beach[] = [
 
   <section class="bg-gradient-to-b from-[#0066FF]/20 to-[#00D4FF]/20 py-12 px-4 rounded-lg mb-12">
     <div class="max-w-3xl mx-auto text-center">
-      <h2 class="text-3xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-6">Consejos para tu visita</h2>
+      <h2 class="text-3xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-6">
+        Consejos para tu visita
+      </h2>
       <div class="grid md:grid-cols-3 gap-6">
         <div>
           <div class="text-2xl mb-2">🌊</div>
