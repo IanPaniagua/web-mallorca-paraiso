@@ -8,39 +8,10 @@ import { fetchFromBackend } from '../utils/api';
 // Fetch data at build time (equivalent to getStaticProps)
 const beaches = await fetchFromBackend<Beach[]>(API_ENDPOINTS.beaches.getAll);
 
-// Debug: Log the received data with focus on images
-console.log('Beaches data:', beaches);
-console.log('Beach images:', beaches.map(beach => ({
-  name: beach.name,
-  image: beach.image
-})));
-
-// Constants for filters
-const regions = [
-  "Norte",
-  "Sur",
-  "Este",
-  "Oeste",
-  "Bahía de Palma"
-];
-
-const towns = [
-  "Alcúdia",
-  "Pollença",
-  "Artà",
-  "Capdepera",
-  "Manacor",
-  "Santanyí",
-  "Calvià",
-  "Andratx",
-  "Palma",
-  "Campos"
-];
-
-const types = [
-  "Cala",
-  "Playa"
-];
+// Extract unique zones, localities and categories from the data
+const regions = [...new Set(beaches.map(beach => beach.locality.zone.name))];
+const towns = [...new Set(beaches.map(beach => beach.locality.name))];
+const types = [...new Set(beaches.map(beach => beach.category))];
 
 // Generate metadata for SEO
 const title = "Playas de Mallorca - Calas y Playas Paradisíacas";
@@ -116,9 +87,9 @@ const description = "Descubre los rincones más paradisíacos de la costa mallor
       {beaches.map((beach) => (
         <article 
           class="bg-white rounded-lg shadow-sm overflow-hidden flex flex-col"
-          data-region={beach.region}
-          data-town={beach.town}
-          data-type={beach.type}
+          data-region={beach.locality.zone.name}
+          data-town={beach.locality.name}
+          data-type={beach.category}
           data-name={beach.name.toLowerCase()}
         >
           <div class="relative">
@@ -143,16 +114,25 @@ const description = "Descubre los rincones más paradisíacos de la costa mallor
             <div class="space-y-2 text-sm text-gray-600">
               <p class="flex items-center gap-2">
                 <span class="text-[#0066FF]">📍</span>
-                {beach.town}, {beach.region}
+                {beach.locality.name}, {beach.locality.zone.name}
               </p>
               <p class="flex items-center gap-2">
                 <span class="text-[#0066FF]">🏖️</span>
-                {beach.type}
+                {beach.category} ({beach.type})
               </p>
               <p class="flex items-center gap-2">
                 <span class="text-[#0066FF]">🚗</span>
                 {beach.access}
               </p>
+              <a 
+                href={`https://www.google.com/maps?q=${beach.latitude},${beach.longitude}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center gap-2 text-[#0066FF] hover:text-[#00D4FF] transition-colors"
+              >
+                <span>🗺️</span>
+                Cómo llegar
+              </a>
             </div>
             <div class="mt-4">
               <h4 class="text-sm font-semibold text-gray-500 mb-2">Servicios</h4>

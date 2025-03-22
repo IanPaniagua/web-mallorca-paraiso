@@ -2,16 +2,21 @@ import { useState, useEffect } from 'react';
 
 interface BeachesSidebarProps {
   regions: string[];
-  towns: string[];
+  towns: string[];  // Estas son las localidades que vienen del backend
   types: string[];
 }
+
+// Función para capitalizar la primera letra
+const capitalize = (str: string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};
 
 export default function BeachesSidebar({ regions, towns, types }: BeachesSidebarProps) {
   const [filters, setFilters] = useState({
     search: '',
     region: '',
-    town: '',
-    type: ''
+    locality: '',  // Cambiado de town a locality
+    selectedTypes: new Set<string>()
   });
 
   useEffect(() => {
@@ -20,18 +25,35 @@ export default function BeachesSidebar({ regions, towns, types }: BeachesSidebar
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFilters(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    if (name !== 'type') {
+      setFilters(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
+  };
+
+  const handleTypeChange = (type: string) => {
+    setFilters(prev => {
+      const newTypes = new Set(prev.selectedTypes);
+      if (newTypes.has(type)) {
+        newTypes.delete(type);
+      } else {
+        newTypes.add(type);
+      }
+      return {
+        ...prev,
+        selectedTypes: newTypes
+      };
+    });
   };
 
   const resetFilters = () => {
     setFilters({
       search: '',
       region: '',
-      town: '',
-      type: ''
+      locality: '',  // Cambiado de town a locality
+      selectedTypes: new Set<string>()
     });
   };
 
@@ -43,7 +65,7 @@ export default function BeachesSidebar({ regions, towns, types }: BeachesSidebar
     articles.forEach(article => {
       const element = article as HTMLElement;
       const region = element.dataset.region;
-      const town = element.dataset.town;
+      const locality = element.dataset.town;  // El dataset sigue siendo town por compatibilidad
       const type = element.dataset.type;
       const name = element.dataset.name;
       
@@ -53,14 +75,14 @@ export default function BeachesSidebar({ regions, towns, types }: BeachesSidebar
       const matchesRegion = !currentFilters.region || 
         region === currentFilters.region;
       
-      const matchesTown = !currentFilters.town || 
-        town === currentFilters.town;
+      const matchesLocality = !currentFilters.locality || 
+        locality === currentFilters.locality;
       
-      const matchesType = !currentFilters.type || 
-        type === currentFilters.type;
+      const matchesType = currentFilters.selectedTypes.size === 0 || 
+        (type && currentFilters.selectedTypes.has(type));
       
       const isVisible = matchesSearch && matchesRegion && 
-        matchesTown && matchesType;
+        matchesLocality && matchesType;
       
       console.log('Beach:', name, 'Visible:', isVisible);
       element.style.display = isVisible ? 'flex' : 'none';
@@ -94,7 +116,7 @@ export default function BeachesSidebar({ regions, towns, types }: BeachesSidebar
             name="region"
             value={filters.region}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0066FF]"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0066FF] bg-white"
           >
             <option value="">Todas las zonas</option>
             {regions.map(region => (
@@ -105,15 +127,15 @@ export default function BeachesSidebar({ regions, towns, types }: BeachesSidebar
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Pueblo
+            Localidad
           </label>
           <select
-            name="town"
-            value={filters.town}
+            name="locality"
+            value={filters.locality}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0066FF]"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0066FF] bg-white"
           >
-            <option value="">Todos los pueblos</option>
+            <option value="">Todas las localidades</option>
             {towns.map(town => (
               <option key={town} value={town}>{town}</option>
             ))}
@@ -124,17 +146,19 @@ export default function BeachesSidebar({ regions, towns, types }: BeachesSidebar
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Tipo
           </label>
-          <select
-            name="type"
-            value={filters.type}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0066FF]"
-          >
-            <option value="">Todos los tipos</option>
+          <div className="space-y-2">
             {types.map(type => (
-              <option key={type} value={type}>{type}</option>
+              <label key={type} className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={filters.selectedTypes.has(type)}
+                  onChange={() => handleTypeChange(type)}
+                  className="rounded border-gray-300 text-[#0066FF] focus:ring-[#0066FF]"
+                />
+                <span className="ml-2 text-sm text-gray-700">{capitalize(type)}</span>
+              </label>
             ))}
-          </select>
+          </div>
         </div>
 
         <button
