@@ -1,21 +1,21 @@
 import { useState, useEffect } from 'react';
 
-interface PlayasSidebarProps {
-  zonas: string[];
-  pueblos: string[];
-  tipos: string[];
+interface BeachesSidebarProps {
+  regions: string[];
+  towns: string[];
+  types: string[];
 }
 
-export default function PlayasSidebar({ zonas, pueblos, tipos }: PlayasSidebarProps) {
+export default function BeachesSidebar({ regions, towns, types }: BeachesSidebarProps) {
   const [filters, setFilters] = useState({
     search: '',
-    zona: '',
-    pueblo: '',
-    tipo: ''
+    region: '',
+    town: '',
+    type: ''
   });
 
   useEffect(() => {
-    aplicarFiltros(filters);
+    applyFilters(filters);
   }, [filters]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -29,40 +29,40 @@ export default function PlayasSidebar({ zonas, pueblos, tipos }: PlayasSidebarPr
   const resetFilters = () => {
     setFilters({
       search: '',
-      zona: '',
-      pueblo: '',
-      tipo: ''
+      region: '',
+      town: '',
+      type: ''
     });
   };
 
-  const aplicarFiltros = (currentFilters: typeof filters) => {
-    console.log('Aplicando filtros:', currentFilters);
+  const applyFilters = (currentFilters: typeof filters) => {
+    console.log('Applying filters:', currentFilters);
     
-    const articles = document.querySelectorAll('#playasGrid article');
+    const articles = document.querySelectorAll('#beachesGrid article');
     
     articles.forEach(article => {
       const element = article as HTMLElement;
-      const zona = element.dataset.zona;
-      const pueblo = element.dataset.pueblo;
-      const tipo = element.dataset.tipo;
-      const nombre = element.dataset.nombre;
+      const region = element.dataset.region;
+      const town = element.dataset.town;
+      const type = element.dataset.type;
+      const name = element.dataset.name;
       
       const matchesSearch = !currentFilters.search || 
-        nombre?.toLowerCase().includes(currentFilters.search.toLowerCase());
+        name?.toLowerCase().includes(currentFilters.search.toLowerCase());
       
-      const matchesZona = !currentFilters.zona || 
-        zona === currentFilters.zona;
+      const matchesRegion = !currentFilters.region || 
+        region === currentFilters.region;
       
-      const matchesPueblo = !currentFilters.pueblo || 
-        pueblo === currentFilters.pueblo;
+      const matchesTown = !currentFilters.town || 
+        town === currentFilters.town;
       
-      const matchesTipo = !currentFilters.tipo || 
-        tipo === currentFilters.tipo;
+      const matchesType = !currentFilters.type || 
+        type === currentFilters.type;
       
-      const isVisible = matchesSearch && matchesZona && 
-        matchesPueblo && matchesTipo;
+      const isVisible = matchesSearch && matchesRegion && 
+        matchesTown && matchesType;
       
-      console.log('Playa:', nombre, 'Visible:', isVisible);
+      console.log('Beach:', name, 'Visible:', isVisible);
       element.style.display = isVisible ? 'flex' : 'none';
     });
   };
@@ -91,14 +91,14 @@ export default function PlayasSidebar({ zonas, pueblos, tipos }: PlayasSidebarPr
             Zona
           </label>
           <select
-            name="zona"
-            value={filters.zona}
+            name="region"
+            value={filters.region}
             onChange={handleChange}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0066FF]"
           >
             <option value="">Todas las zonas</option>
-            {zonas.map(zona => (
-              <option key={zona} value={zona}>{zona}</option>
+            {regions.map(region => (
+              <option key={region} value={region}>{region}</option>
             ))}
           </select>
         </div>
@@ -108,14 +108,14 @@ export default function PlayasSidebar({ zonas, pueblos, tipos }: PlayasSidebarPr
             Pueblo
           </label>
           <select
-            name="pueblo"
-            value={filters.pueblo}
+            name="town"
+            value={filters.town}
             onChange={handleChange}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0066FF]"
           >
             <option value="">Todos los pueblos</option>
-            {pueblos.map(pueblo => (
-              <option key={pueblo} value={pueblo}>{pueblo}</option>
+            {towns.map(town => (
+              <option key={town} value={town}>{town}</option>
             ))}
           </select>
         </div>
@@ -125,14 +125,14 @@ export default function PlayasSidebar({ zonas, pueblos, tipos }: PlayasSidebarPr
             Tipo
           </label>
           <select
-            name="tipo"
-            value={filters.tipo}
+            name="type"
+            value={filters.type}
             onChange={handleChange}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#0066FF]"
           >
             <option value="">Todos los tipos</option>
-            {tipos.map(tipo => (
-              <option key={tipo} value={tipo}>{tipo}</option>
+            {types.map(type => (
+              <option key={type} value={type}>{type}</option>
             ))}
           </select>
         </div>

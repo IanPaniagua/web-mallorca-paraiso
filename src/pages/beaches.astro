@@ -1,15 +1,27 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import PlayasSidebar from '../components/PlayasSidebar';
+import BeachesSidebar from '../components/BeachesSidebar';
 
 interface Filters {
   search: string;
-  zona: string;
-  pueblo: string;
-  tipo: string;
+  region: string;
+  town: string;
+  type: string;
 }
 
-const zonas = [
+interface Beach {
+  name: string;
+  image: string;
+  description: string;
+  region: string;
+  town: string;
+  type: string;
+  services: string[];
+  access: string;
+  featured: boolean;
+}
+
+const regions = [
   "Norte",
   "Sur",
   "Este",
@@ -17,7 +29,7 @@ const zonas = [
   "Bahía de Palma"
 ];
 
-const pueblos = [
+const towns = [
   "Alcúdia",
   "Pollença",
   "Artà",
@@ -30,55 +42,55 @@ const pueblos = [
   "Campos"
 ];
 
-const tipos = [
+const types = [
   "Cala",
   "Playa"
 ];
 
-const playas = [
+const beaches: Beach[] = [
   {
-    nombre: "Playa de Alcúdia",
-    imagen: "/images/alcudia.jpg",
-    descripcion: "Una de las playas más largas de Mallorca, con aguas cristalinas y arena blanca.",
-    zona: "Norte",
-    pueblo: "Alcúdia",
-    tipo: "Playa",
-    servicios: ["Duchas", "Hamacas", "Restaurantes", "Deportes acuáticos"],
-    acceso: "Fácil acceso, parking gratuito",
-    destacado: true
+    name: "Playa de Alcúdia",
+    image: "/images/alcudia.jpg",
+    description: "Una de las playas más largas de Mallorca, con aguas cristalinas y arena blanca.",
+    region: "Norte",
+    town: "Alcúdia",
+    type: "Playa",
+    services: ["Duchas", "Hamacas", "Restaurantes", "Deportes acuáticos"],
+    access: "Fácil acceso, parking gratuito",
+    featured: true
   },
   {
-    nombre: "Cala Mesquida",
-    imagen: "/images/rock.jpg",
-    descripcion: "Extensa playa de arena blanca rodeada de dunas y pinos",
-    zona: "Este",
-    pueblo: "Capdepera",
-    tipo: "Cala",
-    servicios: ["Parking", "Restaurantes", "Tumbonas", "Socorrista"],
-    acceso: "Acceso por carretera asfaltada",
-    destacado: false
+    name: "Cala Mesquida",
+    image: "/images/rock.jpg",
+    description: "Extensa playa de arena blanca rodeada de dunas y pinos",
+    region: "Este",
+    town: "Capdepera",
+    type: "Cala",
+    services: ["Parking", "Restaurantes", "Tumbonas", "Socorrista"],
+    access: "Acceso por carretera asfaltada",
+    featured: false
   },
   {
-    nombre: "Cala Varques",
-    imagen: "/images/cala-varques.jpg",
-    descripcion: "Cala virgen de aguas cristalinas, perfecta para snorkel",
-    zona: "Este",
-    pueblo: "Manacor",
-    tipo: "Cala",
-    servicios: ["Snorkel", "Acantilados", "Naturaleza"],
-    acceso: "Acceso a pie (15 min)",
-    destacado: false
+    name: "Cala Varques",
+    image: "/images/cala-varques.jpg",
+    description: "Cala virgen de aguas cristalinas, perfecta para snorkel",
+    region: "Este",
+    town: "Manacor",
+    type: "Cala",
+    services: ["Snorkel", "Acantilados", "Naturaleza"],
+    access: "Acceso a pie (15 min)",
+    featured: false
   },
   {
-    nombre: "Es Trenc",
-    imagen: "/images/es-trenc.jpg",
-    descripcion: "Playa paradisíaca de aspecto caribeño",
-    zona: "Sur",
-    pueblo: "Campos",
-    tipo: "Playa",
-    servicios: ["Chiringuitos", "Tumbonas", "Deportes acuáticos", "Parking"],
-    acceso: "Parking de pago disponible",
-    destacado: true
+    name: "Es Trenc",
+    image: "/images/es-trenc.jpg",
+    description: "Playa paradisíaca de aspecto caribeño",
+    region: "Sur",
+    town: "Campos",
+    type: "Playa",
+    services: ["Chiringuitos", "Tumbonas", "Deportes acuáticos", "Parking"],
+    access: "Parking de pago disponible",
+    featured: true
   }
 ];
 ---
@@ -96,67 +108,67 @@ const playas = [
   </div>
 
   <script is:inline>
-    function filtrarPlayas(filters) {
-      console.log('Aplicando filtros:', filters);
+    function filterBeaches(filters) {
+      console.log('Applying filters:', filters);
       
-      const articles = document.querySelectorAll('#playasGrid article');
+      const articles = document.querySelectorAll('#beachesGrid article');
       
       articles.forEach(article => {
-        const zona = article.dataset.zona;
-        const pueblo = article.dataset.pueblo;
-        const tipo = article.dataset.tipo;
-        const nombre = article.dataset.nombre;
+        const region = article.dataset.region;
+        const town = article.dataset.town;
+        const type = article.dataset.type;
+        const name = article.dataset.name;
         
         const matchesSearch = !filters.search || 
-          nombre.toLowerCase().includes(filters.search.toLowerCase());
+          name.toLowerCase().includes(filters.search.toLowerCase());
         
-        const matchesZona = !filters.zona || 
-          zona === filters.zona;
+        const matchesRegion = !filters.region || 
+          region === filters.region;
         
-        const matchesPueblo = !filters.pueblo || 
-          pueblo === filters.pueblo;
+        const matchesTown = !filters.town || 
+          town === filters.town;
         
-        const matchesTipo = !filters.tipo || 
-          tipo === filters.tipo;
+        const matchesType = !filters.type || 
+          type === filters.type;
         
-        const isVisible = matchesSearch && matchesZona && 
-          matchesPueblo && matchesTipo;
+        const isVisible = matchesSearch && matchesRegion && 
+          matchesTown && matchesType;
         
-        console.log('Playa:', nombre, 'Visible:', isVisible);
+        console.log('Beach:', name, 'Visible:', isVisible);
         article.style.display = isVisible ? 'flex' : 'none';
       });
     }
 
-    // Inicializar los filtros cuando se carga la página
+    // Initialize filters when page loads
     document.addEventListener('DOMContentLoaded', () => {
-      console.log('Inicializando filtros...');
-      filtrarPlayas({ search: '', zona: '', pueblo: '', tipo: '' });
+      console.log('Initializing filters...');
+      filterBeaches({ search: '', region: '', town: '', type: '' });
     });
   </script>
 
   <div class="flex">
-    <PlayasSidebar 
+    <BeachesSidebar 
       client:load
-      zonas={zonas}
-      pueblos={pueblos}
-      tipos={tipos}
+      regions={regions}
+      towns={towns}
+      types={types}
     />
-    <div id="playasGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 flex-1 p-6">
-      {playas.map((playa) => (
+    <div id="beachesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 flex-1 p-6">
+      {beaches.map((beach) => (
         <article 
           class="bg-white rounded-lg shadow-sm overflow-hidden flex flex-col"
-          data-zona={playa.zona}
-          data-pueblo={playa.pueblo}
-          data-tipo={playa.tipo}
-          data-nombre={playa.nombre.toLowerCase()}
+          data-region={beach.region}
+          data-town={beach.town}
+          data-type={beach.type}
+          data-name={beach.name.toLowerCase()}
         >
           <div class="relative">
             <img 
-              src={playa.imagen} 
-              alt={`Playa ${playa.nombre}`}
+              src={beach.image} 
+              alt={`Playa ${beach.name}`}
               class="w-full h-48 object-cover"
             />
-            {playa.destacado && (
+            {beach.featured && (
               <span class="absolute top-2 right-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full">
                 Destacada
               </span>
@@ -164,29 +176,29 @@ const playas = [
           </div>
           <div class="p-4">
             <h3 class="text-xl font-display bg-gradient-to-r from-[#0066FF] to-[#00D4FF] bg-clip-text text-transparent mb-2">
-              {playa.nombre}
+              {beach.name}
             </h3>
-            <p class="text-gray-600 mb-4">{playa.descripcion}</p>
+            <p class="text-gray-600 mb-4">{beach.description}</p>
             <div class="space-y-2 text-sm text-gray-600">
               <p class="flex items-center gap-2">
                 <span class="text-[#0066FF]">📍</span>
-                {playa.pueblo}, {playa.zona}
+                {beach.town}, {beach.region}
               </p>
               <p class="flex items-center gap-2">
                 <span class="text-[#0066FF]">🏖️</span>
-                {playa.tipo}
+                {beach.type}
               </p>
               <p class="flex items-center gap-2">
                 <span class="text-[#0066FF]">🚗</span>
-                {playa.acceso}
+                {beach.access}
               </p>
             </div>
             <div class="mt-4">
               <h4 class="text-sm font-semibold text-gray-500 mb-2">Servicios</h4>
               <div class="flex flex-wrap gap-2">
-                {playa.servicios.map(servicio => (
+                {beach.services.map(service => (
                   <span class="bg-gradient-to-r from-[#0066FF]/10 to-[#00D4FF]/10 text-[#0066FF] px-3 py-1 rounded-full text-sm">
-                    {servicio}
+                    {service}
                   </span>
                 ))}
               </div>
